@@ -8,12 +8,12 @@ import * as table from '$lib/server/db/schema';
 
 /** @type {import('./$types).Actions} */
 export const actions = {
-	sigunp: async ({request}) => {
+	signup: async ({request}) => {
 		let fullname = "";
 		let email = "";
-		let paswordHash = "";
+		let passwordHash = "";
 		try {
-			const formData = request.formData();
+			const formData = await request.formData();
 			fullname = formData.get("full_name");
 			email = formData.get("email");
 			const password = formData.get("password");
@@ -37,5 +37,6 @@ export const actions = {
 			console.error(err);
 			return fail(409, "email already used, try logging in or clicking forget password");
 		}
+		return redirect(302, "/");
 	}
 };
