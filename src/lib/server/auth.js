@@ -71,20 +71,20 @@ export async function invalidateSession(sessionId) {
 }
 
 /**
- * @param {import("@sveltejs/kit").RequestEvent} event
+ * @param {import("@sveltejs/kit").Cookies} cookies
  * @param {string} token
  * @param {Date} expiresAt
  */
-export function setSessionTokenCookie(event, token, expiresAt) {
-	event.cookies.set(sessionCookieName, token, {
+export function setSessionTokenCookie(cookies, token, expiresAt) {
+	cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
 		path: '/'
 	});
 }
 
-/** @param {import("@sveltejs/kit").RequestEvent} event */
-export function deleteSessionTokenCookie(event) {
-	event.cookies.delete(sessionCookieName, {
+/** @param {import("@sveltejs/kit").Cookies} cookies */
+export function deleteSessionTokenCookie(cookies) {
+	cookies.delete(sessionCookieName, {
 		path: '/'
 	});
 }
