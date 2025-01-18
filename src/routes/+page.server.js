@@ -6,7 +6,15 @@ import * as table from '$lib/server/db/schema';
 
 
 /** @type {import('./$types').PageServerLoad} */
-export function load() {
-	return {
+export async function load() {
+	try {
+		const quizes = db.select().from(table.quiz);
+		return {
+			quizes: quizes,
+		}
+	} catch(err) {
+		console.error(err);
+		return error(500, "failed to fetch data from database");
 	}
 }
+
