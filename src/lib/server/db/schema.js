@@ -14,3 +14,9 @@ export const session = sqliteTable('session', {
 		.references(() => user.id),
 	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
+
+export const quiz = sqliteTable('quiz', {
+	id: integer('id').primaryKey({autoIncrement: true}),
+	title: text('title'),
+	// TODO: add other fields
+});
