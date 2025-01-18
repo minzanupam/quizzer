@@ -2,6 +2,7 @@
 	<label>full name <input type="text" name="full_name" /> </label>
 	<label>email <input type="email" name="email" /> </label>
 	<label>password <input type="password" name="password" /> </label>
+	<a href="/login">already signed up, login here</a>
 	<button>signup</button>
 </form>
 
