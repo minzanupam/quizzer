@@ -13,12 +13,14 @@ export const actions = {
 		const email = formData.get('email');
 		const password = /** @type {string} */ (formData.get('password'));
 		if (!email || !password) {
+			console.error('missing fields');
 			return fail(400, { message: 'missing fields' });
 		}
 
 		const users = db.select().from(table.user).where(eq(table.user.email, email));
 		const dbUser = users[0];
 		if (!dbUser) {
+			console.error('email not found');
 			return fail(400, { message: 'email not found, please signup' });
 		}
 		const validPassword = await verify(dbUser.passwordHash, password, {
@@ -28,6 +30,7 @@ export const actions = {
 			parallelism: 1
 		});
 		if (!validPassword) {
+			console.error('incorrect email or password');
 			return fail(401, { message: 'incorrect email or password' });
 		}
 
