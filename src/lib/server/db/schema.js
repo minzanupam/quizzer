@@ -8,7 +8,7 @@ export const user = sqliteTable('user', {
 });
 
 export const session = sqliteTable('session', {
-	id: integer('id').primaryKey(),
+	id: text('id').primaryKey(),
 	userId: integer('user_id')
 		.notNull()
 		.references(() => user.id),

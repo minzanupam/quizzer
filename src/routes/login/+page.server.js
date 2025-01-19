@@ -10,16 +10,17 @@ import * as table from '$lib/server/db/schema';
 export const actions = {
 	login: async ({ request, cookies }) => {
 		const formData = await request.formData();
-		const email = formData.get('email');
+		const email = /** @type {string} */ (formData.get('email'));
 		const password = /** @type {string} */ (formData.get('password'));
 		if (!email || !password) {
 			console.error('missing fields');
 			return fail(400, { message: 'missing fields' });
 		}
 
-		const users = db.select().from(table.user).where(eq(table.user.email, email));
+		const users = await db.select().from(table.user).where(eq(table.user.email, email));
 		const dbUser = users[0];
 		if (!dbUser) {
+			console.log(email);
 			console.error('email not found');
 			return fail(400, { message: 'email not found, please signup' });
 		}
@@ -36,7 +37,7 @@ export const actions = {
 
 		const sessionToken = auth.generateSessionToken();
 		const session = await auth.createSession(sessionToken, dbUser.id);
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+		auth.setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
 
 		return redirect(302, '/');
 	}

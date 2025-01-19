@@ -6,7 +6,7 @@ import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
-/** @type {import('./$types).Actions} */
+/** @type {import('./$types').Actions} */
 export const actions = {
 	signup: async ({request}) => {
 		let fullname = "";
