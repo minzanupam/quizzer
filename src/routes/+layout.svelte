@@ -10,6 +10,9 @@
 {@render children()}
 
 <style>
+	:root {
+		color-scheme: dark light;
+	}
 	.top-nav {
 		display: flex;
 		flex-direction: row;
