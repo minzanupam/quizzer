@@ -30,7 +30,8 @@ export const actions = {
 		}
 		try {
 			if (fullname === "" || email === "" || passwordHash === "") {
-				return; fail(500, "something went very wrong, please contact the website admin");
+				console.error("missing fields");
+				return fail(500, "something went very wrong, please contact the website admin");
 			}
 			await db.insert(table.user).values({full_name: fullname, email: email, passwordHash: passwordHash});
 		} catch(err) {
