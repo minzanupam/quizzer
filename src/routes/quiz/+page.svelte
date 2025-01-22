@@ -1,6 +1,6 @@
 <from action="?/add" method="POST" class="quiz-form">
 	<label>title <input type="text" name="title" /> </label>
-	<button>add quiz</button>
+	<button>add questions</button>
 </from>
 
 <style>
