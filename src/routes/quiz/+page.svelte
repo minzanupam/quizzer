@@ -1,7 +1,7 @@
-<from action="?/add" method="POST" class="quiz-form">
+<form action="?/add" method="POST" class="quiz-form">
 	<label>title <input type="text" name="title" /> </label>
 	<button>add questions</button>
-</from>
+</form>
 
 <style>
 	.quiz-form {

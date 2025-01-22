@@ -11,12 +11,14 @@ export const actions = {
 	add: async ({request, cookies})=>{
 		// TODO: auth check
 		const formData = await request.formData();
-		const title = /** @type {string} */ (fromData.get("title"));
+		const title = /** @type {string} */ (formData.get("title"));
 		if (title == null || title == '') {
 			console.log('title field not found');
 			return fail(400, {message: 'title field not found'});
 		}
-		const {insertedId} = await db.insert(user.quiz).values({title: title}).returning({insertedId: user.id});
-		return redirect(302, `/quiz/edit/${quiz_id}`)
+
+		const res = await db.insert(table.quiz).values({title: title}).returning({ insertedId: table.quiz.id });
+		const {insertedId} = res[0];
+		return redirect(302, `/quiz/edit/${insertedId}`)
 	},
 };
