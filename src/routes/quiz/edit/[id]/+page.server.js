@@ -16,3 +16,10 @@ export async function load({params}) {
 		console.error(err);
 		return error(400, "failed to parse quiz_id") }
 }
+
+export const actions = {
+	question_add: async ({request}) => {
+		const formData = request.formData();
+		const question = formData.get("question");
+	},
+};

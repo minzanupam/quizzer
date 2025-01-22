@@ -13,7 +13,7 @@
 						{option.text}
 					</div>
 				{/each}
-				<form action="?/question/option/add">
+				<form action="?/option_add">
 					<input type="number" name="option" hidden value={question.id} />
 					<input type="text" name="option" />
 					<button>add options</button>
@@ -23,7 +23,7 @@
 	{/each}
 </div>
 
-<form action="?/question/add" method="POST">
+<form action="?/question_add" method="POST">
 	<label> <input type="text" name="question" /></label>
 	<button>add question</button>
 </form>
