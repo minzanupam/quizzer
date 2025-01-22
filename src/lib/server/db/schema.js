@@ -20,3 +20,20 @@ export const quiz = sqliteTable('quiz', {
 	title: text('title')
 	// TODO: add other fields
 });
+
+export const question = sqliteTable('question', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	text: text('text'),
+	quiz_id: integer('quiz_id')
+		.notNull()
+		.references(() => quiz.id)
+});
+
+export const option = sqliteTable('option', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	text: text('text'),
+	question_id: integer('question_id')
+		.notNull()
+		.references(() => question.id),
+	correct: integer('correct', { mode: 'boolean' })
+});
