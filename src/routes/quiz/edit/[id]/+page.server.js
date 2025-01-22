@@ -22,4 +22,6 @@ export const actions = {
 		const formData = request.formData();
 		const question = formData.get("question");
 	},
+	option_add: async ({request}) => {
+	},
 };
