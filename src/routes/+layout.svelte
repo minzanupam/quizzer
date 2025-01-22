@@ -1,10 +1,14 @@
 <script>
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <nav class="top-nav">
 	<a href="/">home</a>
-	<a href="/login">login</a>
+	{#if data.auth}
+		<a href="/profile">profile</a>
+	{:else}
+		<a href="/login">login</a>
+	{/if}
 	<a href="/quiz">add quiz</a>
 </nav>
 

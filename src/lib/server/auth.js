@@ -88,3 +88,14 @@ export function deleteSessionTokenCookie(cookies) {
 		path: '/'
 	});
 }
+
+/** @param {import("@sveltejs/kit").Cookies} cookies
+ * @return {string}
+ * */
+export function getSessionToken(cookies) {
+	const token = cookies.get(sessionCookieName);
+	if (!token) {
+		return "";
+	}
+	return token;
+}
