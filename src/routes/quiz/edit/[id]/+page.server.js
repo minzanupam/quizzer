@@ -16,16 +16,18 @@ export async function load({ params }) {
 		const res = quizzes.reduce(
 			/** @param {any} acc */
 			(acc, x) => {
-			if (acc.id && acc.id == x.quiz.id) {
-				acc.questions.push(x.question);
-				return acc;
-			}
-			return {
-				id: x.quiz.id,
-				title: x.quiz.title,
-				questions: x.question ? [x.question] : []
-			};
-		}, {});
+				if (acc.id && acc.id == x.quiz.id) {
+					acc.questions.push(x.question);
+					return acc;
+				}
+				return {
+					id: x.quiz.id,
+					title: x.quiz.title,
+					questions: x.question ? [x.question] : []
+				};
+			},
+			{}
+		);
 		return {
 			quiz: res
 		};
@@ -44,19 +46,22 @@ export const actions = {
 	},
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
-		const optionText = formData.get("option");
-		const questionIdStr = formData.get("question_id");
+		const optionText = formData.get('option');
+		const questionIdStr = formData.get('question_id');
 
 		if (!optionText) {
-			return fail(400, {message: "failed to parse optionText"});
+			return fail(400, { message: 'failed to parse optionText' });
 		}
 		if (!questionIdStr) {
-			return fail(400, {message: "failed to parse optionText"});
+			return fail(400, { message: 'failed to parse optionText' });
 		}
 		const questionId = parseInt(questionIdStr);
-		const option = await db.insert(table.option).values({text: optionText, question_id: questionId}).returning();
+		const option = await db
+			.insert(table.option)
+			.values({ text: optionText, question_id: questionId })
+			.returning();
 		return {
-			option,
-		}
+			option
+		};
 	}
 };
