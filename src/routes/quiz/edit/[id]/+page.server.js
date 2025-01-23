@@ -15,19 +15,17 @@ export async function load({ params }) {
 			.where(eq(table.quiz.id, quiz_id));
 		const res = quizzes.reduce((acc, x) => {
 			if (acc.id && acc.id == x.quiz.id) {
-				acc.questions.push(x.question)
+				acc.questions.push(x.question);
 				return acc;
 			}
-			return (
-				{
-					id: x.quiz.id,
-					title: x.quiz.title,
-					questions: x.question ? [x.question] : [],
-				}
-			)
+			return {
+				id: x.quiz.id,
+				title: x.quiz.title,
+				questions: x.question ? [x.question] : []
+			};
 		}, {});
 		return {
-			quiz: res,
+			quiz: res
 		};
 	} catch (err) {
 		console.error(err);
