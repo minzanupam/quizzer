@@ -34,6 +34,8 @@
 				{/if}
 			</div>
 		</div>
+	{:else}
+		<span>no questions...</span>
 	{/each}
 </div>
 
