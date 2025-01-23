@@ -12,6 +12,7 @@
 			{#each quizes as quiz}
 				<div>
 					<h3>{quiz.title}</h3>
+					<a href={`/quiz/edit/${quiz.id}`}> edit </a>
 				</div>
 			{/each}
 		{/await}
