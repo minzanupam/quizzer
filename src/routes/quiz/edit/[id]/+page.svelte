@@ -1,5 +1,8 @@
 <script>
 	let { data } = $props();
+
+	/** points to the current question id to which we are adding new options to */
+	let cur_adding_option = $state(-1);
 </script>
 
 <h2>{data.quiz.title}</h2>
@@ -12,12 +15,23 @@
 					<div>
 						{option.text}
 					</div>
+				{:else}
+					{#if cur_adding_option != question.id}
+						<span>no options add...</span>
+					{/if}
 				{/each}
-				<form action="?/option_add">
-					<input type="number" name="option" hidden value={question.id} />
-					<input type="text" name="option" />
-					<button>add options</button>
-				</form>
+				{#if cur_adding_option == question.id}
+					<form action="?/option_add" method="POST">
+						<input type="number" name="option" hidden value={question.id} />
+						<input type="text" name="option" />
+						<button>add options</button>
+						<button type="button" onclick={() => (cur_adding_option = -1)}>cancel</button>
+					</form>
+				{:else}
+					<button type="button" onclick={() => (cur_adding_option = question.id)}>
+						add options
+					</button>
+				{/if}
 			</div>
 		</div>
 	{/each}

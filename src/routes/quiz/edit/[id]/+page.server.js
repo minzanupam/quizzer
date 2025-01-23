@@ -14,17 +14,17 @@ export async function load({ params }) {
 			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
 			.where(eq(table.quiz.id, quiz_id));
 		const res = quizzes.reduce((acc, x) => {
-			if (acc.quiz && acc.quiz.id == x.quiz.id) {
-				acc.quiz.questions.push(x.question)
+			if (acc.id && acc.id == x.quiz.id) {
+				acc.questions.push(x.question)
 				return acc;
 			}
-			return {
-				quiz: {
+			return (
+				{
 					id: x.quiz.id,
 					title: x.quiz.title,
 					questions: [x.question]
 				}
-			}
+			)
 		}, {});
 		return {
 			quiz: res,
