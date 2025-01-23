@@ -37,7 +37,7 @@ export async function load({ params }) {
 
 export const actions = {
 	question_add: async ({ request }) => {
-		const formData = request.formData();
+		const formData = await request.formData();
 		const question = formData.get('question');
 		await db.insert(table.question).values({ text: question }).returning();
 	},
