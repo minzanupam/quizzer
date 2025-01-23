@@ -21,6 +21,7 @@ export const actions = {
 	question_add: async ({request}) => {
 		const formData = request.formData();
 		const question = formData.get("question");
+		await db.insert(table.question).values({text: question}).returning();
 	},
 	option_add: async ({request}) => {
 	},
