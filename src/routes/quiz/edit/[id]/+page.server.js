@@ -22,7 +22,7 @@ export async function load({ params }) {
 				{
 					id: x.quiz.id,
 					title: x.quiz.title,
-					questions: [x.question]
+					questions: x.question ? [x.question] : [],
 				}
 			)
 		}, {});
