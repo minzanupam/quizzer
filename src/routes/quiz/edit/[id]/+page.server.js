@@ -13,7 +13,9 @@ export async function load({ params }) {
 			.from(table.quiz)
 			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
 			.where(eq(table.quiz.id, quiz_id));
-		const res = quizzes.reduce((acc, x) => {
+		const res = quizzes.reduce(
+			/** @param {any} acc */
+			(acc, x) => {
 			if (acc.id && acc.id == x.quiz.id) {
 				acc.questions.push(x.question);
 				return acc;
@@ -33,6 +35,7 @@ export async function load({ params }) {
 	}
 }
 
+/** @type {import('./$types').Actions} */
 export const actions = {
 	question_add: async ({ request }) => {
 		const formData = await request.formData();
@@ -42,8 +45,15 @@ export const actions = {
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
 		const optionText = formData.get("option");
-		const questionId = formData.get("question_id");
+		const questionIdStr = formData.get("question_id");
 
+		if (!optionText) {
+			return fail(400, {message: "failed to parse optionText"});
+		}
+		if (!questionIdStr) {
+			return fail(400, {message: "failed to parse optionText"});
+		}
+		const questionId = parseInt(questionIdStr);
 		const option = await db.insert(table.option).values({text: optionText, question_id: questionId}).returning();
 		return {
 			option,
