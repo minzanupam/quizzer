@@ -39,5 +39,9 @@ export const actions = {
 		const question = formData.get('question');
 		await db.insert(table.question).values({ text: question }).returning();
 	},
-	option_add: async ({ request }) => {}
+	option_add: async ({ request }) => {
+		const formData = await request.formData();
+		const optionText = formData.get("option");
+		const questionId = formData.get("question_id");
+	}
 };

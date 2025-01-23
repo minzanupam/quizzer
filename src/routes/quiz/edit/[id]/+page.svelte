@@ -22,7 +22,7 @@
 				{/each}
 				{#if cur_adding_option == question.id}
 					<form action="?/option_add" method="POST">
-						<input type="number" name="option" hidden value={question.id} />
+						<input type="number" name="question_id" hidden value={question.id} />
 						<input type="text" name="option" />
 						<button>add options</button>
 						<button type="button" onclick={() => (cur_adding_option = -1)}>cancel</button>
