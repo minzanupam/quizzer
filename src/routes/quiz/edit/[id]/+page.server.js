@@ -26,14 +26,14 @@ export async function load({ params }) {
 
 	let options = new Map();
 	for (let i = 0; i < quizzes.length; i++) {
-		const quiz = quizzes[i];
-		if (options.has(quiz.id)) {
-			options[quiz.question.id].push(quiz.option);
+		const row = quizzes[i];
+		if (options.has(row.question.id)) {
+			options.get(row.question.id).push(row.option);
 		} else {
-			if (quiz.option) {
-				options[quiz.question.id] = [quiz.option];
+			if (row.option) {
+				options.set(row.question.id, [row.option]);
 			} else {
-				options[quiz.question.id] = [];
+				options.set(row.question.id, []);
 			}
 		}
 	}
@@ -41,26 +41,20 @@ export async function load({ params }) {
 	const res = quizzes.reduce(
 		/** @param {any} acc */
 		(acc, x) => {
-			if (acc.id && acc.id == x.quiz.id) {
-				x.question.options = options[x.question.id];
+			const val = acc.questions.find((y) => (y.id == x.question.id));
+			if (!val) {
+				x.question.options = options.get(x.question.id);
 				acc.questions.push(x.question);
-				return acc;
 			}
-			if (x.question) {
-				x.question.options = options[x.question.id];
-				return {
-					id: x.quiz.id,
-					title: x.quiz.title,
-					questions: [x.question],
-				};
-			}
-			return {
+			return ({
 				id: x.quiz.id,
 				title: x.quiz.title,
-				questions: [],
-			};
+				questions: acc.questions,
+			});
 		},
-		{}
+		{
+			questions: [],
+		}
 	);
 
 	return {
