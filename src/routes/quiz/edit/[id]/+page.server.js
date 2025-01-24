@@ -24,13 +24,13 @@ export async function load({ params }) {
 		return fail(400, 'failed to query data from database');
 	}
 
-	let questions = new Map();
+	let options = new Map();
 	for (let i = 0; i < quizzes.length; i++) {
 		const quiz = quizzes[i];
-		if (questions.has(quiz.id)) {
-			questions[quiz.id].push(quiz.option);
+		if (options.has(quiz.id)) {
+			options[quiz.question.id].push(quiz.option);
 		} else {
-			questions[quiz.id] = [];
+			options[quiz.question.id] = [quiz.option];
 		}
 	}
 
@@ -38,17 +38,27 @@ export async function load({ params }) {
 		/** @param {any} acc */
 		(acc, x) => {
 			if (acc.id && acc.id == x.quiz.id) {
+				x.question.options = options[x.question.id];
 				acc.questions.push(x.question);
 				return acc;
+			}
+			if (x.question) {
+				x.question.options = options[x.question.id];
+				return {
+					id: x.quiz.id,
+					title: x.quiz.title,
+					questions: [x.question],
+				};
 			}
 			return {
 				id: x.quiz.id,
 				title: x.quiz.title,
-				questions: x.question ? [x.question] : []
+				questions: [],
 			};
 		},
 		{}
 	);
+
 	return {
 		quiz: res
 	};
