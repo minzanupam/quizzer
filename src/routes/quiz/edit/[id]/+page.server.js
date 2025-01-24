@@ -7,34 +7,51 @@ import * as table from '$lib/server/db/schema';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
 	try {
-		const quiz_id = parseInt(params.id);
-		const quizzes = await db
-			.select()
-			.from(table.quiz)
-			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
-			.where(eq(table.quiz.id, quiz_id));
-		const res = quizzes.reduce(
-			/** @param {any} acc */
-			(acc, x) => {
-				if (acc.id && acc.id == x.quiz.id) {
-					acc.questions.push(x.question);
-					return acc;
-				}
-				return {
-					id: x.quiz.id,
-					title: x.quiz.title,
-					questions: x.question ? [x.question] : []
-				};
-			},
-			{}
-		);
-		return {
-			quiz: res
-		};
+		var quiz_id = parseInt(params.id);
 	} catch (err) {
 		console.error(err);
 		return error(400, 'failed to parse quiz_id');
 	}
+	try {
+		var quizzes = await db
+			.select()
+			.from(table.quiz)
+			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
+			.leftJoin(table.option, eq(table.question.id, table.option.question_id))
+			.where(eq(table.quiz.id, quiz_id));
+	} catch (err) {
+		console.error(err);
+		return fail(400, 'failed to query data from database');
+	}
+
+	let questions = new Map();
+	for (let i = 0; i < quizzes.length; i++) {
+		const quiz = quizzes[i];
+		if (questions.has(quiz.id)) {
+			questions[quiz.id].push(quiz.option);
+		} else {
+			questions[quiz.id] = [];
+		}
+	}
+
+	const res = quizzes.reduce(
+		/** @param {any} acc */
+		(acc, x) => {
+			if (acc.id && acc.id == x.quiz.id) {
+				acc.questions.push(x.question);
+				return acc;
+			}
+			return {
+				id: x.quiz.id,
+				title: x.quiz.title,
+				questions: x.question ? [x.question] : []
+			};
+		},
+		{}
+	);
+	return {
+		quiz: res
+	};
 }
 
 /** @type {import('./$types').Actions} */
