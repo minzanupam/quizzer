@@ -13,7 +13,10 @@
 			<div>
 				<ol>
 					{#each question.options as option}
-						<li>{option.text}</li>
+						<li>
+							<span>{option.text}</span>
+							<button>edit</button>
+						</li>
 					{:else}
 						{#if cur_adding_option != question.id}
 							<span>no options add...</span>
