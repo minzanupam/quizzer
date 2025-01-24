@@ -11,13 +11,15 @@
 		<div>
 			<h3>{question.text}</h3>
 			<div>
-				{#each question.options as option}
-					<div>{option.text}</div>
-				{:else}
-					{#if cur_adding_option != question.id}
-						<span>no options add...</span>
-					{/if}
-				{/each}
+				<ol>
+					{#each question.options as option}
+						<li>{option.text}</li>
+					{:else}
+						{#if cur_adding_option != question.id}
+							<span>no options add...</span>
+						{/if}
+					{/each}
+				</ol>
 				{#if cur_adding_option == question.id}
 					<form action="?/option_add" method="POST">
 						<input type="number" name="question_id" hidden value={question.id} />
