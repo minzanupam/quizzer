@@ -30,7 +30,11 @@ export async function load({ params }) {
 		if (options.has(quiz.id)) {
 			options[quiz.question.id].push(quiz.option);
 		} else {
-			options[quiz.question.id] = [quiz.option];
+			if (quiz.option) {
+				options[quiz.question.id] = [quiz.option];
+			} else {
+				options[quiz.question.id] = [];
+			}
 		}
 	}
 

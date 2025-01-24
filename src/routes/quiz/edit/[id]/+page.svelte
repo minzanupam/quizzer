@@ -12,7 +12,7 @@
 			<h3>{question.text}</h3>
 			<div>
 				{#each question.options as option}
-					<div>{option?.text}</div>
+					<div>{option.text}</div>
 				{:else}
 					{#if cur_adding_option != question.id}
 						<span>no options add...</span>
