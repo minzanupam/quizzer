@@ -85,8 +85,6 @@ export const actions = {
 			.insert(table.option)
 			.values({ text: optionText, question_id: questionId })
 			.returning();
-		return {
-			option
-		};
+		return ({message: "option added", data: {option}});
 	}
 };
