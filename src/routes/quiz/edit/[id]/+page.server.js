@@ -64,10 +64,23 @@ export async function load({ params }) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	question_add: async ({ request }) => {
+	question_add: async ({ request, params }) => {
+		let quizId = 0;
+		try {
+			quizId = parseInt(params.id);
+		} catch (err) {
+			console.error(err);
+			return fail(500, {message: "failed to parse question id"});
+		}
 		const formData = await request.formData();
 		const question = formData.get('question');
-		await db.insert(table.question).values({ text: question }).returning();
+		try {
+			await db.insert(table.question).values({ quiz_id: quizId, text: question });
+			return {message: "question added"}
+		} catch(err) {
+			console.error(err);
+			return fail(400, {message: "question not found"});
+		}
 	},
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
