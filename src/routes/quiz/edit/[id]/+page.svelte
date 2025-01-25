@@ -42,7 +42,7 @@
 	{/each}
 </div>
 
-<form action="?/question_add" method="POST">
+<form action="?/question_add" method="POST" use:enhance>
 	<label> <input type="text" name="question" /></label>
 	<button>add question</button>
 </form>
