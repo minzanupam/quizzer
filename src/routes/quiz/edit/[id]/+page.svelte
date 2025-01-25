@@ -3,6 +3,9 @@
 
 	/** points to the current question id to which we are adding new options to */
 	let cur_adding_option = $state(-1);
+	/** current editing question id adn option id respectively */
+	let curedt_qid = $state(-1);
+	let curedt_oid = $state(-1);
 </script>
 
 <h2>{data.quiz.title}</h2>
@@ -15,7 +18,28 @@
 					{#each question.options as option}
 						<li>
 							<span>{option.text}</span>
-							<button>edit</button>
+							{#if curedt_qid == question.id && curedt_oid == option.id}
+								<form action="?/option_edit" method="POST" use:enhance>
+									<input type="number" name="question_id" hidden value={question.id} />
+									<input type="text" name="option" value={option.text} />
+									<button
+										type="button"
+										onclick={() => {
+											curedt_qid = -1;
+											curedt_oid = -1;
+										}}>cancel</button
+									>
+									<button type="button" class="delete-button">delete</button>
+									<button class="done-button">done</button>
+								</form>
+							{:else}
+								<button
+									onclick={() => {
+										curedt_qid = question.id;
+										curedt_oid = option.id;
+									}}>edit</button
+								>
+							{/if}
 						</li>
 					{:else}
 						{#if cur_adding_option != question.id}
@@ -46,3 +70,12 @@
 	<label> <input type="text" name="question" /></label>
 	<button>add question</button>
 </form>
+
+<style>
+	.done-button {
+		background-color: green;
+	}
+	.delete-button {
+		background-color: red;
+	}
+</style>
