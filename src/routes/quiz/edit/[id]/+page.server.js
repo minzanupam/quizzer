@@ -1,5 +1,5 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -41,19 +41,19 @@ export async function load({ params }) {
 	const res = quizzes.reduce(
 		/** @param {any} acc */
 		(acc, x) => {
-			const val = acc.questions.find((y) => (y.id == x.question.id));
+			const val = acc.questions.find((y) => y.id == x.question.id);
 			if (!val) {
 				x.question.options = options.get(x.question.id);
 				acc.questions.push(x.question);
 			}
-			return ({
+			return {
 				id: x.quiz.id,
 				title: x.quiz.title,
-				questions: acc.questions,
-			});
+				questions: acc.questions
+			};
 		},
 		{
-			questions: [],
+			questions: []
 		}
 	);
 
@@ -70,18 +70,19 @@ export const actions = {
 			quizId = parseInt(params.id);
 		} catch (err) {
 			console.error(err);
-			return fail(500, {message: "failed to parse question id"});
+			return fail(500, { message: 'failed to parse question id' });
 		}
 		const formData = await request.formData();
 		const question = formData.get('question');
 		try {
 			await db.insert(table.question).values({ quiz_id: quizId, text: question });
-			return {message: "question added"}
-		} catch(err) {
+			return { message: 'question added' };
+		} catch (err) {
 			console.error(err);
-			return fail(400, {message: "question not found"});
+			return fail(400, { message: 'question not found' });
 		}
 	},
+
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
 		const optionText = formData.get('option');
@@ -98,6 +99,6 @@ export const actions = {
 			.insert(table.option)
 			.values({ text: optionText, question_id: questionId })
 			.returning();
-		return ({message: "option added", data: {option}});
+		return { message: 'option added', data: { option } };
 	}
 };
