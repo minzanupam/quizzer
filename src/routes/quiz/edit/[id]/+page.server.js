@@ -86,15 +86,14 @@ export const actions = {
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
 		const optionText = formData.get('option');
-		const questionIdStr = formData.get('question_id');
+		const questionId = parseInt(formData.get('question_id'));
 
 		if (!optionText) {
 			return fail(400, { message: 'failed to parse optionText' });
 		}
-		if (!questionIdStr) {
+		if (isNaN(questionId)) {
 			return fail(400, { message: 'failed to parse optionText' });
 		}
-		const questionId = parseInt(questionIdStr);
 		const option = await db
 			.insert(table.option)
 			.values({ text: optionText, question_id: questionId })
