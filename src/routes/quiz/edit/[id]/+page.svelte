@@ -24,7 +24,7 @@
 					{/each}
 				</ol>
 				{#if cur_adding_option == question.id}
-					<form action="?/option_add" method="POST">
+					<form action="?/option_add" method="POST" use:enhance>
 						<input type="number" name="question_id" hidden value={question.id} />
 						<input type="text" name="option" />
 						<button>add options</button>
