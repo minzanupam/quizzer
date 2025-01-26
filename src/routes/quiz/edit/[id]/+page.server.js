@@ -27,6 +27,9 @@ export async function load({ params }) {
 	let options = new Map();
 	for (let i = 0; i < quizzes.length; i++) {
 		const row = quizzes[i];
+		if (!row.question || !row.option) {
+			continue;
+		}
 		if (options.has(row.question.id)) {
 			options.get(row.question.id).push(row.option);
 		} else {
@@ -41,20 +44,24 @@ export async function load({ params }) {
 	const res = quizzes.reduce(
 		/** @param {any} acc */
 		(acc, x) => {
+			if (JSON.stringify(acc) == '{}') {
+				acc = {
+					id: x.quiz.id,
+					title: x.quiz.title,
+					questions: [],
+				}
+			}
+			if (!x.question) {
+				return acc;
+			}
 			const val = acc.questions.find((y) => y.id == x.question.id);
 			if (!val) {
 				x.question.options = options.get(x.question.id);
 				acc.questions.push(x.question);
 			}
-			return {
-				id: x.quiz.id,
-				title: x.quiz.title,
-				questions: acc.questions
-			};
+			return acc;
 		},
-		{
-			questions: []
-		}
+		{}
 	);
 
 	return {
