@@ -20,6 +20,7 @@
 							<span>{option.text}</span>
 							{#if curedt_qid == question.id && curedt_oid == option.id}
 								<form action="?/option_edit" method="POST" use:enhance>
+									<input type="number" name="option_id" hidden value={option.id} />
 									<input type="number" name="question_id" hidden value={question.id} />
 									<input type="text" name="option" value={option.text} />
 									<button

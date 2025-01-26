@@ -99,5 +99,35 @@ export const actions = {
 			.values({ text: optionText, question_id: questionId })
 			.returning();
 		return { message: 'option added', data: { option } };
+	},
+
+	option_edit: async ({ request }) => {
+		const formData = await request.formData();
+		const optionText = formData.get('option');
+		const questionId = parseInt(formData.get('question_id'));
+		const optionId = parseInt(formData.get('option_id'));
+
+		if (!optionText) {
+			console.error('Validation error Error, option text not found');
+			return fail(400, { message: 'failed to parse optionText' });
+		}
+		if (isNaN(questionId)) {
+			console.error('Validation error Error, question id is not a number');
+			return fail(400, { message: 'falied to parse question id' });
+		}
+		if (isNaN(optionId)) {
+			console.error('Validation error Error, option id is not a number');
+			return fail(400, { message: 'falied to parse question id' });
+		}
+
+		try {
+			// question id not used for now as option id itself is unique
+			await db
+				.update(table.option)
+				.set({text: optionText})
+				.where(eq(table.option.id, optionId));
+		} catch (err) {
+			return fail(400, { message: 'failed to add values to the database' });
+		}
 	}
 };
