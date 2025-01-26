@@ -1,5 +1,4 @@
 <script>
-	import { enhance } from '$app/forms';
 	let { data } = $props();
 
 	/** points to the current question id to which we are adding new options to */
@@ -20,7 +19,7 @@
 						<li>
 							<span>{option.text}</span>
 							{#if curedt_qid == question.id && curedt_oid == option.id}
-								<form action="?/option_edit" method="POST" use:enhance>
+								<form action="?/option_edit" method="POST">
 									<input type="number" name="option_id" hidden value={option.id} />
 									<input type="number" name="question_id" hidden value={question.id} />
 									<input type="text" name="option" value={option.text} />
@@ -50,7 +49,7 @@
 					{/each}
 				</ol>
 				{#if cur_adding_option == question.id}
-					<form action="?/option_add" method="POST" use:enhance>
+					<form action="?/option_add" method="POST">
 						<input type="number" name="question_id" hidden value={question.id} />
 						<input type="text" name="option" />
 						<button>add options</button>
@@ -68,7 +67,7 @@
 	{/each}
 </div>
 
-<form action="?/question_add" method="POST" use:enhance>
+<form action="?/question_add" method="POST">
 	<label> <input type="text" name="question" /></label>
 	<button>add question</button>
 </form>
