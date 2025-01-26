@@ -1,4 +1,5 @@
 <script>
+	import { enhance } from '$app/forms';
 	let { data } = $props();
 
 	/** points to the current question id to which we are adding new options to */
