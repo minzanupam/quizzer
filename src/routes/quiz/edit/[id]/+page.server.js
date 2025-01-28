@@ -136,5 +136,19 @@ export const actions = {
 		} catch (err) {
 			return fail(400, { message: 'failed to add values to the database' });
 		}
+	},
+
+	option_delete: async ({request, params}) => {
+		const formData = request.formData();
+		const optionId = parseInt(formData.get("option_id"));
+		if (isNaN(optionId)) {
+			console.error('Validation error Error, option id is not a number');
+			return fail(400, { message: 'failed to parse option id' });
+		}
+		try {
+			await db.delete(table.option).where(eq(table.option.id, optionId));
+		} catch(err) {
+			return fail(400, { message: 'failed to delete option' });
+		}
 	}
 };

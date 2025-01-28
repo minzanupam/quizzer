@@ -30,7 +30,9 @@
 											curedt_oid = -1;
 										}}>cancel</button
 									>
-									<button type="button" class="delete-button">delete</button>
+									<button type="button" class="delete-button" formaction="?/option_delete">
+										delete
+									</button>
 									<button class="done-button">done</button>
 								</form>
 							{:else}
