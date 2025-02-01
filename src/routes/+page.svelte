@@ -6,13 +6,15 @@
 	<h1>List of Quizes</h1>
 
 	<div>
-		{#await data.quizes}
+		{#await data.quizzes}
 			<div>Loading...</div>
-		{:then quizes}
-			{#each quizes as quiz}
+		{:then rows}
+			{#each rows as row}
 				<div>
-					<h3>{quiz.title}</h3>
-					<a href={`/quiz/edit/${quiz.id}`}> edit </a>
+					<h3>{row.quiz.title}</h3>
+					<div>from: {row.user.full_name}</div>
+					<div>expires at: {row.quiz.expiresAt}</div>
+					<a href={`/quiz/edit/${row.quiz.id}`}> edit </a>
 				</div>
 			{/each}
 		{/await}
