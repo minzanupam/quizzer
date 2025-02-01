@@ -9,7 +9,16 @@ import * as table from '$lib/server/db/schema';
 /** @type {import('./$types').Actions} */
 export const actions = {
 	add: async ({request, cookies})=>{
-		// TODO: auth check
+		const token = auth.getSessionToken(cookies);
+		if (token == "") {
+			console.error('failed to validate session, token not found');
+			return fail(400, {mesasge: 'user not logged in'});
+		}
+		const {session, user} = await auth.validateSessionToken(token);
+		if (JSON.stringify('user') == '{}') {
+			console.error('failed to validate session, user not found');
+			return fail(400, {mesasge: 'user not logged in'});
+		}
 		const formData = await request.formData();
 		const title = /** @type {string} */ (formData.get("title"));
 		if (title == null || title == '') {
@@ -17,7 +26,13 @@ export const actions = {
 			return fail(400, {message: 'title field not found'});
 		}
 
-		const res = await db.insert(table.quiz).values({title: title}).returning({ insertedId: table.quiz.id });
+		const expiresAtDate = new Date();
+		expiresAtDate.setDate(expiresAtDate.getDate() + 7);
+
+		const res = await db.insert(table.quiz)
+			.values({ title: title, ownerId: user.id, expiresAt: expiresAtDate })
+			.returning({ insertedId: table.quiz.id });
+
 		const {insertedId} = res[0];
 		return redirect(302, `/quiz/edit/${insertedId}`)
 	},

@@ -17,8 +17,9 @@ export const session = sqliteTable('session', {
 
 export const quiz = sqliteTable('quiz', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
-	title: text('title')
-	// TODO: add other fields
+	title: text('title'),
+	ownerId: integer('owner_id').notNull().references(()=>user.id),
+	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull()
 });
 
 export const question = sqliteTable('question', {
