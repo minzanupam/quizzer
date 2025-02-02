@@ -22,6 +22,7 @@
 					<div>from: {user.full_name}</div>
 					<div>expires at: {quiz.expiresAt}</div>
 					<a href={`/quiz/edit/${quiz.id}`}> edit </a>
+					<a href={`/quiz/attempt/${quiz.id}`}>attempt</a>
 				</div>
 			{/each}
 		{/await}
