@@ -1,5 +1,6 @@
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
@@ -47,8 +48,8 @@ export async function load({ params }) {
 				acc = {
 					id: x.quiz.id,
 					title: x.quiz.title,
-					questions: [],
-				}
+					questions: []
+				};
 			}
 			if (!x.question) {
 				return acc;
@@ -73,7 +74,12 @@ export async function load({ params }) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	question_add: async ({ request, params }) => {
+	question_add: async ({ request, params, cookies }) => {
+		const token = auth.getSessionToken(cookies);
+		const { session, user } = await auth.validateSessionToken(token);
+		if (!user || !session) {
+			return fail(401, { message: 'user not authenticated, please continue after logging in' });
+		}
 		let quizId = parseInt(params.id);
 		if (isNaN(quizId)) {
 			console.error("invalid quiz id");
@@ -85,13 +91,21 @@ export const actions = {
 			console.error("question is empty");
 			return fail(400, {message: "question is empty"});
 		}
-		try {
-			await db.insert(table.question).values({ quiz_id: quizId, text: question.toString() });
-			return { message: 'question added' };
-		} catch (err) {
-			console.error(err);
-			return fail(400, { message: 'question not found' });
-		}
+		db.transaction(async (tx) => {
+			const quizzes = await tx.select().from(table.quiz).where(eq(table.quiz.id, quizId));
+			if (quizzes.length < 1) {
+				tx.rollback();
+				return fail(400, {
+					message: 'failed to find the respective quiz. Are you sure that the quiz was created?'
+				});
+			}
+			const quiz = quizzes[0];
+			if (quiz.ownerId != user.id) {
+				tx.rollback();
+				return fail(409, { message: 'only owner can edit their quiz' });
+			}
+			await tx.insert(table.question).values({ quiz_id: quizId, text: question.toString() });
+		});
 	},
 
 	option_add: async ({ request }) => {
@@ -133,16 +147,13 @@ export const actions = {
 
 		try {
 			// question id not used for now as option id itself is unique
-			await db
-				.update(table.option)
-				.set({text: optionText})
-				.where(eq(table.option.id, optionId));
+			await db.update(table.option).set({ text: optionText }).where(eq(table.option.id, optionId));
 		} catch (err) {
 			return fail(400, { message: 'failed to add values to the database' });
 		}
 	},
 
-	option_delete: async ({request}) => {
+	option_delete: async ({ request }) => {
 		const formData = await request.formData();
 		const optionId = parseInt(formData.get("option_id")?.toString() ?? "");
 		if (isNaN(optionId)) {
@@ -151,8 +162,9 @@ export const actions = {
 		}
 		try {
 			await db.delete(table.option).where(eq(table.option.id, optionId));
-		} catch(err) {
+		} catch (err) {
 			return fail(400, { message: 'failed to delete option' });
 		}
+		return {message: 'option delete successful'};
 	}
 };
