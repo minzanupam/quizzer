@@ -21,7 +21,7 @@ export async function load({ params }) {
 			.where(eq(table.quiz.id, quiz_id));
 	} catch (err) {
 		console.error(err);
-		return fail(400, 'failed to query data from database');
+		return fail(400, {message: 'failed to query data from database'});
 	}
 
 	let options = new Map();
