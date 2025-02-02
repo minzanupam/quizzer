@@ -17,7 +17,7 @@ export async function load({ cookies }) {
 	try {
 		return {
 			quizzes: getQuizzes()
-		}
+		};
 	} catch (err) {
 		console.error(err);
 		return error(500, 'failed to fetch data from database');
