@@ -1,4 +1,5 @@
 <script>
+	/** @type{{data: import('./$types').PageServerData}} */
 	let { data } = $props();
 
 	let editOn = $state(false);
@@ -9,14 +10,14 @@
 	<div>
 		{#if editOn}
 			<form action="?/edit_profile" method="POST">
-				<label>full name <input type="text" name="name" value={data.user.full_name} /></label>
-				<label>email <input type="text" name="email " value={data.user.email} /></label>
+				<label>full name <input type="text" name="name" value={data.user?.full_name} /></label>
+				<label>email <input type="text" name="email " value={data.user?.email} /></label>
 				<button type="button">cancel</button>
 				<button>done</button>
 			</form>
 		{:else}
-			<div>{data.user.fullname}</div>
-			<div>{data.user.email}</div>
+			<div>{data.user?.full_name}</div>
+			<div>{data.user?.email}</div>
 			<button>edit profile</button>
 			<button>change password</button>
 		{/if}

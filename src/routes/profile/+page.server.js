@@ -4,6 +4,7 @@ import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
+/** @type{import('./$types').PageServerLoad} */
 export async function load({ request, cookies }) {
 	const token = auth.getSessionToken(cookies);
 	if (token == "") {
@@ -15,14 +16,15 @@ export async function load({ request, cookies }) {
 		return fail(400, {mesasge: 'user not logged in'});
 	}
 	const db_users = await db
-		.select({
-			id: table.user.id,
-			email: table.user.email,
-			fullname: table.user.full_name
-		})
+		.select()
 		.from(table.user)
 		.where(eq(table.user.id, user.id));
+	if (db_users.length < 1) {
+		return fail(500, {message: "user not found"});
+	}
+	const {passwordHash, ...db_user} = {...db_users[0]};
+
 	return {
-		user: db_users[0],
+		user: db_user,
 	};
 }
