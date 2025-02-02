@@ -5,6 +5,13 @@
 <main>
 	<h1>List of Quizes</h1>
 
+	{#if !data.authorized}
+		<div>
+			Login and start attempting quizzes
+			<a href="/login">click here to login</a>
+		</div>
+	{/if}
+
 	<div>
 		{#await data.quizzes}
 			<div>Loading...</div>

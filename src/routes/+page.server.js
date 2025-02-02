@@ -14,9 +14,13 @@ async function getQuizzes() {
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ cookies }) {
+	const token = auth.getSessionToken(cookies);
+	const { session, user } = await auth.validateSessionToken(token);
+
 	try {
 		return {
-			quizzes: getQuizzes()
+			quizzes: getQuizzes(),
+			authorized: !!user
 		};
 	} catch (err) {
 		console.error(err);
