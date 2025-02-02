@@ -5,7 +5,7 @@
 <main>
 	<h1>List of Quizes</h1>
 
-	{#if data.user == 0}
+	{#if data.user.id == 0}
 		<div>
 			Login and start attempting quizzes
 			<a href="/login">click here to login</a>
