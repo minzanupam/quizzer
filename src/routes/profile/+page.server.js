@@ -11,8 +11,7 @@ export async function load({ request, cookies }) {
 		return fail(400, {mesasge: 'user not logged in'});
 	}
 	const {session, user} = await auth.validateSessionToken(token);
-	if (JSON.stringify('user') == '{}') {
-		console.error('failed to validate session, user not found');
+	if (!user) {
 		return fail(400, {mesasge: 'user not logged in'});
 	}
 	const db_users = await db
