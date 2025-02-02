@@ -9,7 +9,7 @@
 	{:else}
 		<a href="/login">login</a>
 	{/if}
-	<a href="/quiz">add quiz</a>
+	<a href="/quiz/create">create new quiz</a>
 </nav>
 
 {@render children()}
