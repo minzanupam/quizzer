@@ -20,7 +20,9 @@ export async function load({ cookies }) {
 	try {
 		return {
 			quizzes: getQuizzes(),
-			authorized: !!user
+			user: {
+				id: user ? user.id : 0,
+			},
 		};
 	} catch (err) {
 		console.error(err);
