@@ -28,3 +28,17 @@ export async function load({ request, cookies }) {
 		user: db_user,
 	};
 }
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+	logout: async ({cookies}) => {
+		const token = auth.getSessionToken(cookies);
+		const { session, user } = await auth.validateSessionToken(token);
+		if (!session) {
+			return redirect(302, "/login");
+		}
+		await auth.invalidateSession(session.id);
+		await auth.deleteSessionTokenCookie(cookies);
+		return redirect(302, "/login");
+	}
+};
