@@ -10,8 +10,20 @@
 	<div>
 		{#if editOn}
 			<form action="?/edit_profile" method="POST">
-				<label>full name <input type="text" name="name" value={data.user?.full_name} /></label>
-				<label>email <input type="text" name="email " value={data.user?.email} /></label>
+				<label
+					>full name <input
+						type="text"
+						name="name"
+						value={data.user?.full_name}
+					/></label
+				>
+				<label
+					>email <input
+						type="text"
+						name="email "
+						value={data.user?.email}
+					/></label
+				>
 				<button type="button">cancel</button>
 				<button>done</button>
 			</form>
