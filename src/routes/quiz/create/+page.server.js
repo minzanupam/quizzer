@@ -15,7 +15,7 @@ export const actions = {
 			return fail(400, {mesasge: 'user not logged in'});
 		}
 		const {session, user} = await auth.validateSessionToken(token);
-		if (JSON.stringify('user') == '{}') {
+		if (!user) {
 			console.error('failed to validate session, user not found');
 			return fail(400, {mesasge: 'user not logged in'});
 		}
