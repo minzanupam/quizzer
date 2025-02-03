@@ -4,12 +4,12 @@
 
 <nav class="top-nav">
 	<a href="/">home</a>
+	<a href="/quiz/create">create new quiz</a>
 	{#if data.auth}
 		<a href="/profile">profile</a>
 	{:else}
 		<a href="/login">login</a>
 	{/if}
-	<a href="/quiz/create">create new quiz</a>
 </nav>
 
 {@render children()}
