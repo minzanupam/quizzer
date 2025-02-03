@@ -8,19 +8,20 @@ import * as table from '$lib/server/db/schema';
 export async function load({ request, cookies }) {
 	const token = auth.getSessionToken(cookies);
 	if (token == "") {
-		console.error('failed to validate session, token not found');
-		return fail(400, {mesasge: 'user not logged in'});
+		console.error('user is not logged in, token is empty');
+		return error(401, 'user not logged in');
 	}
 	const {session, user} = await auth.validateSessionToken(token);
 	if (!user) {
-		return fail(400, {mesasge: 'user not logged in'});
+		console.error('user not logged in, user object is empty');
+		return error(400, 'user not logged in');
 	}
 	const db_users = await db
 		.select()
 		.from(table.user)
 		.where(eq(table.user.id, user.id));
 	if (db_users.length < 1) {
-		return fail(500, {message: "user not found"});
+		return error(500, {message: "user not found"});
 	}
 	const {passwordHash, ...db_user} = {...db_users[0]};
 
