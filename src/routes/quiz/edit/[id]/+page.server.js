@@ -54,10 +54,13 @@ export async function load({ params }) {
 			if (!x.question) {
 				return acc;
 			}
-			const val = acc.questions.find((y) => y.id == x.question.id);
+			const val = acc.questions.find(/** @param {{id: number}} y */ (y) => y.id == x.question?.id);
 			if (!val) {
+				// @ts-ignore
+				// I like mutating object and not the spread operation
 				x.question.options = options.get(x.question.id);
 				acc.questions.push(x.question);
+				// @ts-check
 			}
 			return acc;
 		},
