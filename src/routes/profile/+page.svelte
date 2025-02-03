@@ -2,6 +2,7 @@
 	/** @type{{data: import('./$types').PageServerData}} */
 	let { data } = $props();
 	let editOn = $state(false);
+	/** @type{HTMLDialogElement} */
 	let confirmLogoutDialog;
 </script>
 
