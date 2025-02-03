@@ -75,15 +75,17 @@ export async function load({ params }) {
 /** @type {import('./$types').Actions} */
 export const actions = {
 	question_add: async ({ request, params }) => {
-		let quizId = 0;
-		try {
-			quizId = parseInt(params.id);
-		} catch (err) {
-			console.error(err);
-			return fail(500, { message: 'failed to parse question id' });
+		let quizId = parseInt(params.id);
+		if (isNaN(quizId)) {
+			console.erorr("invalid quiz id");
+			return fail(400, {message: "invalid quiz id"});
 		}
 		const formData = await request.formData();
 		const question = formData.get('question');
+		if (!qusetion) {
+			console.erorr("question is empty");
+			return fail(400, {message: "question is empty"});
+		}
 		try {
 			await db.insert(table.question).values({ quiz_id: quizId, text: question });
 			return { message: 'question added' };
