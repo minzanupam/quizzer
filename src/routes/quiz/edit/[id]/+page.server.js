@@ -77,17 +77,17 @@ export const actions = {
 	question_add: async ({ request, params }) => {
 		let quizId = parseInt(params.id);
 		if (isNaN(quizId)) {
-			console.erorr("invalid quiz id");
+			console.error("invalid quiz id");
 			return fail(400, {message: "invalid quiz id"});
 		}
 		const formData = await request.formData();
 		const question = formData.get('question');
-		if (!qusetion) {
-			console.erorr("question is empty");
+		if (!question) {
+			console.error("question is empty");
 			return fail(400, {message: "question is empty"});
 		}
 		try {
-			await db.insert(table.question).values({ quiz_id: quizId, text: question });
+			await db.insert(table.question).values({ quiz_id: quizId, text: question.toString() });
 			return { message: 'question added' };
 		} catch (err) {
 			console.error(err);
@@ -97,8 +97,8 @@ export const actions = {
 
 	option_add: async ({ request }) => {
 		const formData = await request.formData();
-		const optionText = formData.get('option');
-		const questionId = parseInt(formData.get('question_id'));
+		const optionText = formData.get('option')?.toString();
+		const questionId = parseInt(formData.get('question_id')?.toString() ?? "");
 
 		if (!optionText) {
 			return fail(400, { message: 'failed to parse optionText' });
@@ -115,9 +115,9 @@ export const actions = {
 
 	option_edit: async ({ request }) => {
 		const formData = await request.formData();
-		const optionText = formData.get('option');
-		const questionId = parseInt(formData.get('question_id'));
-		const optionId = parseInt(formData.get('option_id'));
+		const optionText = formData.get('option')?.toString();
+		const questionId = parseInt(formData.get('question_id')?.toString() ?? "");
+		const optionId = parseInt(formData.get('option_id')?.toString() ?? "");
 
 		if (!optionText) {
 			console.error('Validation error Error, option text not found');
@@ -143,9 +143,9 @@ export const actions = {
 		}
 	},
 
-	option_delete: async ({request, params}) => {
-		const formData = request.formData();
-		const optionId = parseInt(formData.get("option_id"));
+	option_delete: async ({request}) => {
+		const formData = await request.formData();
+		const optionId = parseInt(formData.get("option_id")?.toString() ?? "");
 		if (isNaN(optionId)) {
 			console.error('Validation error Error, option id is not a number');
 			return fail(400, { message: 'failed to parse option id' });
