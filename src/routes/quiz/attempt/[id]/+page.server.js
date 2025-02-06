@@ -31,22 +31,17 @@ export async function load({ cookies, params }) {
 	const question_rows = rows.map(x => x.question);
 	const questions = [];
 
+	const opts = rows.map(x => x.option);
+	const options = Object.groupBy(opts, (x) => x.question_id)
+
 	outer: for (let q of question_rows) {
 		for (let x of questions) {
 			if (q.id == x.id) {
 				continue outer;
 			}
 		}
-		questions.push(q);
+		questions.push({...q, options: options[q.id]});
 	}
-
-	const opts = rows.map(x => x.option);
-	const options = Object.groupBy(opts, (x) => x.question_id)
-	for (let q of questions) {
-		q.options = options[q.id];
-	}
-
-	console.log(questions[0].options);
 
 	return {
 		quiz,
