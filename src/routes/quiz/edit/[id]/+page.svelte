@@ -20,8 +20,18 @@
 							<span>{option.text}</span>
 							{#if curedt_qid == question.id && curedt_oid == option.id}
 								<form action="?/option_edit" method="POST">
-									<input type="number" name="option_id" hidden value={option.id} />
-									<input type="number" name="question_id" hidden value={question.id} />
+									<input
+										type="number"
+										name="option_id"
+										hidden
+										value={option.id}
+									/>
+									<input
+										type="number"
+										name="question_id"
+										hidden
+										value={question.id}
+									/>
 									<input type="text" name="option" value={option.text} />
 									<button
 										type="button"
@@ -30,7 +40,11 @@
 											curedt_oid = -1;
 										}}>cancel</button
 									>
-									<button type="button" class="delete-button" formaction="?/option_delete">
+									<button
+										type="button"
+										class="delete-button"
+										formaction="?/option_delete"
+									>
 										delete
 									</button>
 									<button class="done-button">done</button>
@@ -52,13 +66,23 @@
 				</ol>
 				{#if cur_adding_option == question.id}
 					<form action="?/option_add" method="POST">
-						<input type="number" name="question_id" hidden value={question.id} />
+						<input
+							type="number"
+							name="question_id"
+							hidden
+							value={question.id}
+						/>
 						<input type="text" name="option" />
 						<button>add options</button>
-						<button type="button" onclick={() => (cur_adding_option = -1)}>cancel</button>
+						<button type="button" onclick={() => (cur_adding_option = -1)}
+							>cancel</button
+						>
 					</form>
 				{:else}
-					<button type="button" onclick={() => (cur_adding_option = question.id)}>
+					<button
+						type="button"
+						onclick={() => (cur_adding_option = question.id)}
+					>
 						add options
 					</button>
 				{/if}
