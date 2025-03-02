@@ -10,13 +10,11 @@ async function load({ cookies, params }) {
 	if (isNaN(quizId)) {
 		console.error("failed to parse quiz_id\nquiz_id value: ", quizId);
 		error(400, {message: "failed to parse quiz_id"});
-		return;
 	}
 	const questionId = parseInt(params.question_id);
 	if (isNaN(questionId)) {
 		console.error("failed to parse quiz_id\nquiz_id value: ", questionId);
 		error(400, {message: "failed to parse question_id"});
-		return;
 	}
 	const questions= await db.select().from(table.question)
 		.innerJoin(table.option, eq(table.option.question_id, table.question.id))
