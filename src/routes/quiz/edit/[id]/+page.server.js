@@ -10,7 +10,6 @@ export async function load({ params }) {
 	if (isNaN(quiz_id)) {
 		console.error("failed to parse quiz_id with value: ", quiz_id);
 		error(400, {message: "failed to parse quiz_id"});
-		return;
 	}
 	try {
 		var rows = await db
@@ -21,11 +20,11 @@ export async function load({ params }) {
 			.where(eq(table.quiz.id, quiz_id));
 	} catch (err) {
 		console.error(err);
-		return fail(400, {message: 'failed to query data from database'});
+		error(400, {message: 'failed to query data from database'});
 	}
 
 	if (rows.length == 0) {
-		return fail(404, { message: "quiz item with id not found" });
+		error(404, { message: "quiz item with id not found" });
 	}
 	const quiz = rows[0].quiz;
 	const question_rows = rows.map(x => x.question);
