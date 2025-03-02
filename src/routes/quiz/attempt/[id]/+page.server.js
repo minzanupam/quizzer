@@ -8,12 +8,12 @@ import * as table from "$lib/server/db/schema";
 export async function load({ cookies, params }) {
 	const quizId = parseInt(params.id);
 	if (isNaN(quizId)) {
-		return fail(400, { message: "failed to parse quiz" });
+		error(400, { message: "failed to parse quiz" });
 	}
 	const token = auth.getSessionToken(cookies);
 	const { session, user } = await auth.validateSessionToken(token);
 	if (!user || !session) {
-		return fail(401, {
+		error(401, {
 			message: "user not authenticated, please login in before continuing"
 		});
 	}
@@ -25,7 +25,7 @@ export async function load({ cookies, params }) {
 		.innerJoin(table.option, eq(table.question.id, table.option.question_id))
 		.where(eq(table.quiz.id, quizId));
 	if (rows.length == 0) {
-		return fail(404, { message: "quiz item with id not found" });
+		error(404, { message: "quiz item with id not found" });
 	}
 	const quiz = rows[0].quiz;
 	const question_rows = rows.map(x => x.question);
