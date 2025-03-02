@@ -39,7 +39,7 @@ export async function load({ params }) {
 				continue outer;
 			}
 		}
-		questions.push({...q, options: options[q.id]});
+		questions.push({...q, options: options[q.id] ?? []});
 	}
 
 	return {
