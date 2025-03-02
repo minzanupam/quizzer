@@ -6,11 +6,11 @@ import * as table from '$lib/server/db/schema';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
-	try {
-		var quiz_id = parseInt(params.id);
-	} catch (err) {
-		console.error(err);
-		return error(400, 'failed to parse quiz_id');
+	const quiz_id = parseInt(params.id);
+	if (isNaN(quiz_id)) {
+		console.error("failed to parse quiz_id with value: ", quiz_id);
+		error(400, {message: "failed to parse quiz_id"});
+		return;
 	}
 	try {
 		var rows = await db
