@@ -2,4 +2,6 @@
 	const { data } = $props();
 </script>
 
-<button>start quiz {data.quiz.id}</button>
+<a href={`/quiz/attempt/${data.quiz.id}/${data.question.id}`}>
+	start quiz {data.quiz.id}
+</a>
