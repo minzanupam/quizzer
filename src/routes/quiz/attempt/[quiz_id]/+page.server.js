@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import * as table from "$lib/server/db/schema";
 
 /** @type{import("./$types").PageServerLoad} */
-async function load({params}) {
+export async function load({params}) {
 	const quizId = parseInt(params.quiz_id);
 	if (isNaN(quizId)) {
 		console.error("failde to parse quiz_id with value ", quizId);
