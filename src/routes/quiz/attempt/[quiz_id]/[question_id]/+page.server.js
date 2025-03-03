@@ -22,14 +22,19 @@ export async function load({ cookie, params }) {
 				eq(table.question.id, questionId),
 				eq(table.question.quiz_id, quizId)
 			)
-		);
+		)
+		.innerJoin(table.option, eq(table.option.question_id, questionId));
 
 	try {
 		return {
-			question: questions[0]
+			question: questions[0].question,
+			options: questions.map(x => {
+				delete x.correct;
+				return x.option
+			}),
 		};
-	} catch(err) {
+	} catch (err) {
 		console.error(err);
-		error(500, {message: "failed to fetch question records"});
+		error(500, { message: "failed to fetch question records" });
 	}
 }
