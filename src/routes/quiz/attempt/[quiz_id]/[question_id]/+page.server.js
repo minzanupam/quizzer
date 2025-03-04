@@ -75,7 +75,7 @@ export const actions = {
 			error(400, { message: "failed to parse option id" });
 		}
 
-		await db.insert(table.test).values({
+		await db.insert(table.quiz_attempt).values({
 			quiz_id: quizId,
 			question_id: questionId,
 			option_id: optionId

@@ -39,7 +39,7 @@ export const option = sqliteTable('option', {
 	correct: integer('correct', { mode: 'boolean' })
 });
 
-export const test = sqliteTable('test', {
+export const quiz_attempt = sqliteTable('quiz_attempt', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	// will be null before the start of test
 	started_at: integer('started_at', { mode: 'timestamp' }),
