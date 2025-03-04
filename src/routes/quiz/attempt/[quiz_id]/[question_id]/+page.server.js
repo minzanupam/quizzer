@@ -42,5 +42,19 @@ export async function load({ cookie, params }) {
 /** @type{import("./$types").Actions} */
 export const actions = {
 	next: async ({request, params, cookies}) => {
+		const formData = await request.formData();
+		console.log(formData);
+		const questionId = parseInt(formData.get("question_id"))
+		if (isNaN(questionId)) {
+			console.error("failed to parse question id value:", formData.get("question_id"));
+			error(400, {message: "failed to parse question id"});
+		}
+		const optionId = parseInt(formData.get("question_options"));
+		if (isNaN(optionId)) {
+			console.error("failed to parse option id: value", formData.get("question_options"));
+			error(400, {message: "failed to parse option id"});
+		}
+
+		console.log(questionId, optionId);
 	}
 }
