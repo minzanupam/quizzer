@@ -15,8 +15,8 @@ export async function load({ params }) {
 		var rows = await db
 			.select()
 			.from(table.quiz)
-			.innerJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
-			.innerJoin(table.option, eq(table.question.id, table.option.question_id))
+			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
+			.leftJoin(table.option, eq(table.question.id, table.option.question_id))
 			.where(eq(table.quiz.id, quiz_id));
 	} catch (err) {
 		console.error(err);
@@ -27,10 +27,16 @@ export async function load({ params }) {
 		error(404, { message: "quiz item with id not found" });
 	}
 	const quiz = rows[0].quiz;
-	const question_rows = rows.map(x => x.question);
-	const questions = [];
+	const question_rows = rows.map(x => x.question).filter(x => !!x);
 
-	const opts = rows.map(x => x.option);
+	if (question_rows.length == 0) {
+		return {
+			quiz: {...quiz, questions: []},
+		}
+	}
+
+	const questions = [];
+	const opts = rows.map(x => x.option).filter(x => !!x);
 	const options = Object.groupBy(opts, (x) => x.question_id)
 
 	outer: for (let q of question_rows) {
