@@ -85,6 +85,9 @@ export const actions = {
 			.orderBy(sql`${table.question.id} asc`)
 			.limit(1);
 
+		if (questions.length == 0) {
+			return redirect(302, `/quiz/attempt/${quizId}/end`);
+		}
 		const nextQuestionId = questions[0].id;
 		return redirect(302, `/quiz/attempt/${quizId}/${nextQuestionId}`);
 	}
