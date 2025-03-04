@@ -1,4 +1,4 @@
-import { error } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import { eq, and } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
@@ -44,7 +44,12 @@ export const actions = {
 	next: async ({request, params, cookies}) => {
 		const formData = await request.formData();
 		console.log(formData);
-		const questionId = parseInt(formData.get("question_id"))
+		const quizId = parseInt(params.quiz_id);
+		if (isNaN(quizId)) {
+			console.error("failed to parse quiz id value:", params.quiz_id);
+			error(400, {message: "failed to parse quiz id"});
+		}
+		const questionId = parseInt(params.question_id);
 		if (isNaN(questionId)) {
 			console.error("failed to parse question id value:", formData.get("question_id"));
 			error(400, {message: "failed to parse question id"});

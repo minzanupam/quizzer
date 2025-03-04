@@ -6,7 +6,6 @@
 <h3>{data.question?.text}</h3>
 
 <form method="POST" action="?/next" class="question">
-	<input type="text" name="question_id" value="1" hidden />
 	{#each data.options as option}
 		<label>
 			<input type="radio" name={`question_options`} value={option.id} />
