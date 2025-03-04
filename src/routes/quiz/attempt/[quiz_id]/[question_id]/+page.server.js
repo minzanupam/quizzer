@@ -3,7 +3,8 @@ import { eq, and, gt, sql } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
 
-export async function load({ cookie, params }) {
+/** @type{import("./$types").PageServerLoad} */
+export async function load({ cookies, params }) {
 	const quizId = parseInt(params.quiz_id);
 	const questionId = parseInt(params.question_id);
 
@@ -29,8 +30,7 @@ export async function load({ cookie, params }) {
 		return {
 			question: questions[0].question,
 			options: questions.map(x => {
-				delete x.correct;
-				return x.option
+				return {...x.option, correct: undefined}
 			}),
 		};
 	} catch (err) {
