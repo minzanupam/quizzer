@@ -30,7 +30,11 @@ export async function load({ cookies, params }) {
 		return {
 			question: questions[0].question,
 			options: questions.map(x => {
-				return {...x.option, correct: undefined}
+				return {
+					id: x.option.id,
+					text: x.option.text ?? "",
+					question_id: x.option.question_id,
+				};
 			}),
 		};
 	} catch (err) {
