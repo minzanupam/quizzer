@@ -7,12 +7,15 @@
 
 <form method="POST" action="/?next" class="question">
 	{#each data.options as option}
+		<input
+			type="text"
+			name="question_id"
+			value={data.question.id}
+			disabled
+			hidden
+		/>
 		<label>
-			<input
-				type="radio"
-				name={`question-${data.question?.id}`}
-				value={`option-${option.id}`}
-			/>
+			<input type="radio" name={`question_options`} value={option.id} />
 			{option.text}
 		</label>
 	{/each}
