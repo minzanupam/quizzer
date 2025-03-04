@@ -38,3 +38,9 @@ export async function load({ cookie, params }) {
 		error(500, { message: "failed to fetch question records" });
 	}
 }
+
+/** @type{import("./$types").Actions} */
+export const actions = {
+	next: async ({request, params, cookies}) => {
+	}
+}
