@@ -4,6 +4,48 @@ import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
+
+/** @typedef {
+	{
+		quiz: {
+			id: number;
+			expiresAt: Date;
+			title: string | null;
+			ownerId: number;
+		};
+		question: {
+			id: number;
+			text: string | null;
+			quiz_id: number;
+		} | null;
+		option: {
+			id: number;
+			text: string | null;
+			question_id: number;
+			correct: boolean | null;
+		} | null;
+	}[]
+} Rows
+*/
+
+/** @param {Rows} rows */
+function parseRowsIntoQuestions(rows) {
+	const question_rows = rows.map(x => x.question).filter(x => !!x);
+	const questions = [];
+	const opts = rows.map(x => x.option).filter(x => !!x);
+	const options = Object.groupBy(opts, (x) => x.question_id)
+
+	outer: for (let q of question_rows) {
+		for (let x of questions) {
+			if (q.id == x.id) {
+				continue outer;
+			}
+		}
+		questions.push({...q, options: options[q.id] ?? []});
+	}
+	return questions;
+}
+
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
 	const quiz_id = parseInt(params.id);
@@ -35,19 +77,7 @@ export async function load({ params }) {
 		}
 	}
 
-	const questions = [];
-	const opts = rows.map(x => x.option).filter(x => !!x);
-	const options = Object.groupBy(opts, (x) => x.question_id)
-
-	outer: for (let q of question_rows) {
-		for (let x of questions) {
-			if (q.id == x.id) {
-				continue outer;
-			}
-		}
-		questions.push({...q, options: options[q.id] ?? []});
-	}
-
+	const questions = parseRowsIntoQuestions(rows);
 	return {
 		quiz: {...quiz, questions},
 	};
