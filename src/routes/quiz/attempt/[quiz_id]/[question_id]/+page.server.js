@@ -61,5 +61,6 @@ export const actions = {
 		}
 
 		console.log(questionId, optionId);
+		return redirect(302, `/quiz/attempt/${quizId}/${questionId}`)
 	}
 }
