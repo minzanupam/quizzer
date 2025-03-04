@@ -94,7 +94,14 @@ export const actions = {
 			.limit(1);
 
 		if (questions.length == 0) {
-			return redirect(302, `/quiz/attempt/${quizId}/end`);
+			const questions2 = await db
+				.select({ id: table.question.id })
+				.from(table.question)
+				.where(eq(table.question.quiz_id, quizId))
+				.orderBy(sql`${table.question.id} asc`)
+				.limit(1);
+			const firstQuestionId = questions2[0].id;
+			return redirect(302, `/quiz/attempt/${quizId}/${firstQuestionId}`);
 		}
 		const nextQuestionId = questions[0].id;
 		return redirect(302, `/quiz/attempt/${quizId}/${nextQuestionId}`);
