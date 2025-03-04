@@ -38,3 +38,21 @@ export const option = sqliteTable('option', {
 		.references(() => question.id),
 	correct: integer('correct', { mode: 'boolean' })
 });
+
+export const test = sqliteTable('test', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	// will be null before the start of test
+	started_at: integer('started_at', { mode: 'timestamp' }),
+	// will be null at the start of the test
+	ended_at: integer('ended_at', { mode: 'timestamp' }),
+	quiz_id: integer('quiz_id')
+		.notNull()
+		.references(() => quiz.id),
+	question_id: integer('question_id')
+		.notNull()
+		.references(() => question.id),
+	// this is the selected option
+	option_id: integer('option_id')
+		.notNull()
+		.references(() => option.id),
+});
