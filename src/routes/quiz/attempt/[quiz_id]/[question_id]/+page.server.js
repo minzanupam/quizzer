@@ -115,6 +115,8 @@ export const actions = {
 		const nextQuestionId = questions[0].id;
 		return redirect(302, `/quiz/attempt/${quizId}/${nextQuestionId}`);
 	},
+
+
 	previous: async ({ request, params, cookies }) => {
 		const formData = await request.formData();
 		if (!formData) {
