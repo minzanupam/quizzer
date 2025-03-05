@@ -163,8 +163,8 @@ export const actions = {
 				console.error("previous question not found in questions:", questions2);
 				error(400, {message: "previous question not found"});
 			}
-			const listQuestionId = questions2[questions2.length - 1].id;
-			return redirect(302, `/quiz/attempt/${quizId}/${listQuestionId}`);
+			const lastQuestionId = questions2[questions2.length - 1].id;
+			return redirect(302, `/quiz/attempt/${quizId}/${lastQuestionId}`);
 		}
 		const previousQuestionId = questions[questions.length - 1].id;
 		return redirect(302, `/quiz/attempt/${quizId}/${previousQuestionId}`);
