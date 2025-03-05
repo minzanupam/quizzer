@@ -12,13 +12,13 @@
 			<div class="options-box">
 				{#each data.options as option}
 					<label class="question-option-box">
-						<input type="radio" name={`question_options`} value={option.id} />
+						<input type="radio" name="question_options" value={option.id} />
 						{option.text}
 					</label>
 				{/each}
 			</div>
 			<div class="button-box">
-				<button formaction="/?previous">previous</button>
+				<button formaction="?/previous">previous</button>
 				<button>next</button>
 			</div>
 		</form>
