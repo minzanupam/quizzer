@@ -129,18 +129,27 @@ export const actions = {
 			/** @type{string} */ (formData.get("question_options"))
 		);
 		if (isNaN(optionId)) {
-			console.error(
-				"failed to parse option id: value",
-				formData.get("question_options")
-			);
-			error(400, { message: "failed to parse option id" });
+			if (formData.get("question_options") != null) {
+				console.error(
+					"failed to parse option id: value",
+					formData.get("question_options")
+				);
+			}
+			await db
+				.delete(table.quiz_attempt)
+				.where(
+					and(
+						eq(table.quiz_attempt.quiz_id, quizId),
+						eq(table.quiz_attempt.question_id, questionId)
+					)
+				);
+		} else {
+			await db.insert(table.quiz_attempt).values({
+				quiz_id: quizId,
+				question_id: questionId,
+				option_id: optionId
+			});
 		}
-
-		await db.insert(table.quiz_attempt).values({
-			quiz_id: quizId,
-			question_id: questionId,
-			option_id: optionId
-		});
 
 		const questions = await db
 			.select({ id: table.question.id })
