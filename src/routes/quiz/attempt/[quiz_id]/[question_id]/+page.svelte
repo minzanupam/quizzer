@@ -5,7 +5,10 @@
 <main class="page">
 	<section class="sidenav">hello</section>
 	<section class="question-section">
-		<h1>Question {data.question?.id}.</h1>
+		<div class="title-group">
+			<h1>Question {data.question?.id}.</h1>
+			<button>End Quiz</button>
+		</div>
 		<div class="question-text">{data.question?.text}</div>
 
 		<form method="POST" action="?/next" class="question">
@@ -37,6 +40,14 @@
 	}
 	.question-section {
 		padding-left: 2rem;
+	}
+	.title-group {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		justify-content: space-between;
+		align-items: flex-start;
+		padding: 1rem;
 	}
 	.options-box {
 		display: flex;
