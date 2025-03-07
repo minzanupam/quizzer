@@ -8,7 +8,7 @@ import * as table from '$lib/server/db/schema';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	signup: async ({ request }) => {
+	signup: async ({ request, cookies }) => {
 		let fullname = '';
 		let email = '';
 		let passwordHash = '';
@@ -53,6 +53,13 @@ export const actions = {
 			console.error(err);
 			return fail(409, {message: 'email already used, try logging in or clicking forget password'});
 		}
+
+		const users = await db.select().from(table.user).where(eq(table.user.email, email));
+
+		const sessionToken = auth.generateSessionToken();
+		const session = await auth.createSession(sessionToken, users[0].id);
+		auth.setSessionTokenCookie(cookies, sessionToken, session.expiresAt);
+
 		return redirect(302, '/');
 	}
 };
