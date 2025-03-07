@@ -26,14 +26,23 @@ export async function load({ cookies, params }) {
 		)
 		.innerJoin(table.option, eq(table.option.question_id, questionId));
 
+	const attempts = await db.select().from(table.quiz_attempt).where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+
 	try {
 		return {
 			question: questions[0].question,
 			options: questions.map((x) => {
+				let checked = false;
+				for (let y of attempts) {
+					if (y && y.option_id == x.option.id) {
+						checked = true;
+					}
+				}
 				return {
 					id: x.option.id,
 					text: x.option.text ?? "",
-					question_id: x.option.question_id
+					question_id: x.option.question_id,
+					checked: checked,
 				};
 			})
 		};

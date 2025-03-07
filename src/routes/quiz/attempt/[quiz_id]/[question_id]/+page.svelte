@@ -15,7 +15,12 @@
 			<div class="options-box">
 				{#each data.options as option}
 					<label class="question-option-box">
-						<input type="radio" name="question_options" value={option.id} />
+						<input
+							type="radio"
+							name="question_options"
+							value={option.id}
+							checked={option.checked}
+						/>
 						{option.text}
 					</label>
 				{/each}
