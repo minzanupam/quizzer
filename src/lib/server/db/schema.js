@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, unique } from 'drizzle-orm/sqlite-core';
 
 export const user = sqliteTable('user', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
@@ -52,4 +52,6 @@ export const quiz_attempt = sqliteTable('quiz_attempt', {
 	option_id: integer('option_id') // this is the selected option
 		.notNull()
 		.references(() => option.id),
-});
+}, (t) => [
+		unique().on(t.quiz_id, t.question_id, t.option_id),
+]);
