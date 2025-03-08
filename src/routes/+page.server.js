@@ -18,12 +18,21 @@ export async function load({ cookies }) {
 	const { session, user } = await auth.validateSessionToken(token);
 
 	try {
-		return {
-			quizzes: getQuizzes(),
-			user: {
-				id: user ? user.id : 0,
-			},
-		};
+		if (user) {
+			return {
+				quizzes: getQuizzes(),
+				user: {
+					id: user ? user.id : 0,
+				},
+			};
+		} else {
+			return {
+				quizzes: [],
+				user: {
+					id: 0,
+				}
+			}
+		}
 	} catch (err) {
 		console.error(err);
 		return error(500, 'failed to fetch data from database');
