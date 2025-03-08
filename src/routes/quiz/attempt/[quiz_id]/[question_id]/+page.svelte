@@ -11,7 +11,7 @@
 		</div>
 		<div class="question-text">{data.question?.text}</div>
 
-		<form method="POST" action="?/next" class="question">
+		<form method="POST" action="?/select" class="question">
 			<div class="options-box">
 				{#each data.options as option}
 					<label class="question-option-box">
@@ -27,7 +27,8 @@
 			</div>
 			<div class="button-box">
 				<button formaction="?/previous">previous</button>
-				<button>next</button>
+				<button>select</button>
+				<button formaction="?/next">next</button>
 			</div>
 		</form>
 	</section>
