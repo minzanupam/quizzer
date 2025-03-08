@@ -6,13 +6,25 @@
 	/** current editing question id adn option id respectively */
 	let curedt_qid = $state(-1);
 	let curedt_oid = $state(-1);
+
+	let qedt_qid = $state(-1);
 </script>
 
 <h2>{data.quiz.title}</h2>
 <div>
 	{#each data.quiz.questions as question}
 		<div>
-			<h3>{question.text}</h3>
+			{#if qedt_qid == question.id}
+				<form action="?/question_edit" method="POST">
+					<input type="number" name="question_id" hidden />
+					<input type="text" name="question" value={question.text} />
+					<button type="button" onclick={() => (qedt_qid = -1)}>cancel</button>
+					<button class="done-button">done</button>
+				</form>
+			{:else}
+				<h3>{question.text}</h3>
+				<button onclick={() => (qedt_qid = question.id)}>edit</button>
+			{/if}
 			<div>
 				<ol>
 					{#each question.options as option}
