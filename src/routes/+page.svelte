@@ -24,6 +24,11 @@
 					<a href={`/quiz/edit/${quiz.id}`}> edit </a>
 					<a href={`/quiz/attempt/${quiz.id}`}>attempt</a>
 				</div>
+			{:else}
+				<div>
+					No quizzes found <a href="/quiz/create">start creating new quizzes</a
+					>
+				</div>
 			{/each}
 		{/await}
 	</div>
