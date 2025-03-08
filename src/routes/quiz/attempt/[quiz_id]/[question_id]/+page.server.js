@@ -176,11 +176,18 @@ export const actions = {
 					)
 				);
 		} else {
-			await db.insert(table.quiz_attempt).values({
-				quiz_id: quizId,
-				question_id: questionId,
-				option_id: optionId
-			});
+			try {
+				await db.insert(table.quiz_attempt).values({
+					quiz_id: quizId,
+					question_id: questionId,
+					option_id: optionId
+				});
+			} catch(err) {
+				await db
+				.update(table.quiz_attempt)
+				.set({option_id: optionId})
+				.where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+			}
 		}
 
 		const questions = await db
