@@ -91,6 +91,12 @@ export const actions = {
 	},
 
 	next: async ({ request, params, cookies }) => {
+		const token = auth.getSessionToken(cookies);
+		const { user } = await auth.validateSessionToken(token);
+		if (!user) {
+			return fail(401, {message: "login required"});
+		}
+
 		const formData = await request.formData();
 		if (!formData) {
 			console.error("form data not found, value:", formData);
@@ -132,7 +138,8 @@ export const actions = {
 				await db.insert(table.quiz_attempt).values({
 					quiz_id: quizId,
 					question_id: questionId,
-					option_id: optionId
+					option_id: optionId,
+					user_id: user.id
 				});
 			} catch(err) {
 				console.error(err);
@@ -176,6 +183,11 @@ export const actions = {
 
 
 	previous: async ({ request, params, cookies }) => {
+		const token = auth.getSessionToken(cookies);
+		const { user } = await auth.validateSessionToken(token);
+		if (!user) {
+			return fail(400, { message: "form data not found" });
+		}
 		const formData = await request.formData();
 		if (!formData) {
 			console.error("form data not found, value:", formData);
@@ -217,7 +229,8 @@ export const actions = {
 				await db.insert(table.quiz_attempt).values({
 					quiz_id: quizId,
 					question_id: questionId,
-					option_id: optionId
+					option_id: optionId,
+					user_id: user.id
 				});
 			} catch(err) {
 				console.error(err);
