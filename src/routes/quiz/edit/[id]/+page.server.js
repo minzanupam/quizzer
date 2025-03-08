@@ -1,5 +1,5 @@
 import { error, fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import * as auth from '$lib/server/auth';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
@@ -203,5 +203,27 @@ export const actions = {
 			.update(table.question)
 			.set({ text: /** @type {string} */ (questionText) })
 			.where(eq(table.question.id, questionId));
-	}
+	},
+
+	question_delete: async({ request, params, cookies }) => {
+		const formData = await request.formData()
+		const quizId = parseInt(params.id);
+		if (isNaN(quizId)) {
+			console.error("failed to parse quiz id with value:", formData.get("quiz_id"));
+			return fail(400, {message: "failed to parse quiz id"});
+		}
+		const questionId = parseInt(/** @type {string} */ (formData.get("question_id")));
+		if (isNaN(questionId)) {
+			console.error("failed to parse question id with value:", formData.get("question_id"));
+			return fail(400, {message: "failed to parse question id"});
+		}
+		await db
+			.delete(table.question)
+			.where(
+				and(
+					eq(table.question.quiz_id, quizId),
+					eq(table.question.id, questionId)
+				)
+			);
+	},
 };
