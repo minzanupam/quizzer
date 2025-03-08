@@ -1,5 +1,6 @@
 <script>
 	const { data } = $props();
+	let question_form = $state();
 </script>
 
 <main class="page">
@@ -11,7 +12,12 @@
 		</div>
 		<div class="question-text">{data.question?.text}</div>
 
-		<form method="POST" action="?/select" class="question">
+		<form
+			method="POST"
+			action="?/select"
+			class="question"
+			bind:this={question_form}
+		>
 			<div class="options-box">
 				{#each data.options as option}
 					<label class="question-option-box">
@@ -20,6 +26,7 @@
 							name="question_options"
 							value={option.id}
 							checked={option.checked}
+							onchange={() => question_form.requestSubmit()}
 						/>
 						{option.text}
 					</label>
