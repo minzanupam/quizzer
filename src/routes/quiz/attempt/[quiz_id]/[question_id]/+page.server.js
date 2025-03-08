@@ -2,6 +2,7 @@ import { error, redirect, fail } from "@sveltejs/kit";
 import { eq, and, gt, lt, sql } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
+import * as auth from "$lib/server/auth";
 
 /** @type{import("./$types").PageServerLoad} */
 export async function load({ cookies, params }) {
@@ -55,6 +56,11 @@ export async function load({ cookies, params }) {
 /** @type{import("./$types").Actions} */
 export const actions = {
 	select: async ({ request, params, cookies }) => {
+		const token = auth.getSessionToken(cookies);
+		const { user } = await auth.validateSessionToken(token);
+		if (!user) {
+			return fail(401, {message: "login required"});
+		}
 		const quizId = parseInt(params.quiz_id);
 		if (isNaN(quizId)) {
 			console.error("failed to parse quiz id with value:", params.quiz_id);
@@ -74,7 +80,7 @@ export const actions = {
 		try {
 			await db
 				.insert(table.quiz_attempt)
-				.values({ quiz_id: quizId, question_id: questionId, option_id: optionId });
+				.values({ quiz_id: quizId, question_id: questionId, option_id: optionId, user_id: user.id });
 		} catch(err) {
 			console.error(err);
 			await db
