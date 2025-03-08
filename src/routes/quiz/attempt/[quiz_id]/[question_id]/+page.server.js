@@ -129,6 +129,7 @@ export const actions = {
 					option_id: optionId
 				});
 			} catch(err) {
+				console.error(err);
 				await db
 					.update(table.quiz_attempt)
 					.set({ option_id: optionId })
@@ -213,6 +214,7 @@ export const actions = {
 					option_id: optionId
 				});
 			} catch(err) {
+				console.error(err);
 				await db
 				.update(table.quiz_attempt)
 				.set({option_id: optionId})
