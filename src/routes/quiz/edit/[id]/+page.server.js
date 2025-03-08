@@ -177,5 +177,31 @@ export const actions = {
 			return fail(400, { message: 'failed to delete option' });
 		}
 		return {message: 'option delete successful'};
+	},
+
+	question_edit: async({ request, cookies }) => {
+		const token = auth.getSessionToken(cookies);
+		const { user } = await auth.validateSessionToken(token);
+		if (!user || user.id == 0) {
+			console.error("user object not found");
+			return fail(401, {message: "login required"});
+		}
+
+		const formData = await request.formData();
+		const questionId = parseInt(/** @type {string} */ (formData.get("question_id")));
+		if (isNaN(questionId)) {
+			console.error("failed to parse questionId with value:", formData.get("question_id"));
+			return fail(400, {message: "failed to parse questionId"});
+		}
+		const questionText = formData.get("question");
+		if (!questionText || questionText == "") {
+			console.error("question text is empty");
+			return fail(400, {message: "question text is empty"});
+		}
+
+		await db
+			.update(table.question)
+			.set({ text: /** @type {string} */ (questionText) })
+			.where(eq(table.question.id, questionId));
 	}
 };

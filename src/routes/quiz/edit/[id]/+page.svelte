@@ -16,7 +16,7 @@
 		<div>
 			{#if qedt_qid == question.id}
 				<form action="?/question_edit" method="POST">
-					<input type="number" name="question_id" hidden />
+					<input type="number" name="question_id" value={question.id} hidden />
 					<input type="text" name="question" value={question.text} />
 					<button type="button" onclick={() => (qedt_qid = -1)}>cancel</button>
 					<button class="done-button">done</button>
