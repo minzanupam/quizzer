@@ -1,4 +1,4 @@
-import { error, redirect } from "@sveltejs/kit";
+import { error, redirect, fail } from "@sveltejs/kit";
 import { eq, and, gt, lt, sql } from "drizzle-orm";
 import { db } from "$lib/server/db";
 import * as table from "$lib/server/db/schema";
@@ -54,6 +54,36 @@ export async function load({ cookies, params }) {
 
 /** @type{import("./$types").Actions} */
 export const actions = {
+	select: async ({ request, params, cookies }) => {
+		const quizId = parseInt(params.quiz_id);
+		if (isNaN(quizId)) {
+			console.error("failed to parse quiz id with value:", params.quiz_id);
+			return fail(400, {message: "failed to parse quiz id"});
+		}
+		const questionId = parseInt(params.question_id);
+		if (isNaN(questionId)) {
+			console.error("failed to parse question id with value:", params.question_id);
+			return fail(400, {message: "failed to parse question id"});
+		}
+		const formData = await request.formData();
+		const optionId = parseInt(/** @type {string} */ (formData.get("question_options")));
+		if (isNaN(optionId)) {
+			console.error("failed to parse option id with value:", formData.get("question_options"));
+			return fail(400, {message: "failed to parse option id"});
+		}
+		try {
+			await db
+				.insert(table.quiz_attempt)
+				.values({ quiz_id: quizId, question_id: questionId, option_id: optionId });
+		} catch(err) {
+			console.error(err);
+			await db
+				.update(table.quiz_attempt)
+				.set({option_id: optionId})
+				.where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+		}
+	},
+
 	next: async ({ request, params, cookies }) => {
 		const formData = await request.formData();
 		if (!formData) {
