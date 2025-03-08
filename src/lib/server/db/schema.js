@@ -43,6 +43,9 @@ export const quiz_attempt = sqliteTable('quiz_attempt', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	started_at: integer('started_at', { mode: 'timestamp' }), // will be null before the start of test
 	ended_at: integer('ended_at', { mode: 'timestamp' }), // will be null at the start of the test
+	user_id: integer('user_id')
+		.notNull()
+		.references(() => user.id),
 	quiz_id: integer('quiz_id')
 		.notNull()
 		.references(() => quiz.id),
@@ -53,5 +56,5 @@ export const quiz_attempt = sqliteTable('quiz_attempt', {
 		.notNull()
 		.references(() => option.id),
 }, (t) => [
-		unique().on(t.quiz_id, t.question_id),
+		unique().on(t.quiz_id, t.question_id, t.user_id),
 ]);
