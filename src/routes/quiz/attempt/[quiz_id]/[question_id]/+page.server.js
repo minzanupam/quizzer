@@ -105,7 +105,7 @@ export const actions = {
 					.where(
 						and(
 							eq(table.quiz_attempt.quiz_id, quizId),
-							eq(table.quiz_attempt.question_id)
+							eq(table.quiz_attempt.question_id, questionId)
 						)
 					);
 			}
