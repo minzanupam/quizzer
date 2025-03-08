@@ -53,5 +53,5 @@ export const quiz_attempt = sqliteTable('quiz_attempt', {
 		.notNull()
 		.references(() => option.id),
 }, (t) => [
-		unique().on(t.quiz_id, t.question_id, t.option_id),
+		unique().on(t.quiz_id, t.question_id),
 ]);
