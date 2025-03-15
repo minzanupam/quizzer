@@ -16,12 +16,12 @@ import * as table from '$lib/server/db/schema';
 		question: {
 			id: number;
 			text: string | null;
-			quiz_id: number;
+			quizId: number;
 		} | null;
 		option: {
 			id: number;
 			text: string | null;
-			question_id: number;
+			questionId: number;
 			correct: boolean | null;
 		} | null;
 	}[]
@@ -33,7 +33,7 @@ function parseRowsIntoQuestions(rows) {
 	const question_rows = rows.map(x => x.question).filter(x => !!x);
 	const questions = [];
 	const opts = rows.map(x => x.option).filter(x => !!x);
-	const options = Object.groupBy(opts, (x) => x.question_id)
+	const options = Object.groupBy(opts, (x) => x.questionId)
 
 	outer: for (let q of question_rows) {
 		for (let x of questions) {
@@ -57,8 +57,8 @@ export async function load({ params }) {
 		var rows = await db
 			.select()
 			.from(table.quiz)
-			.leftJoin(table.question, eq(table.quiz.id, table.question.quiz_id))
-			.leftJoin(table.option, eq(table.question.id, table.option.question_id))
+			.leftJoin(table.question, eq(table.quiz.id, table.question.quizId))
+			.leftJoin(table.option, eq(table.question.id, table.option.questionId))
 			.where(eq(table.quiz.id, quiz_id));
 	} catch (err) {
 		console.error(err);
@@ -115,7 +115,7 @@ export const actions = {
 				tx.rollback();
 				return fail(409, { message: 'only owner can edit their quiz' });
 			}
-			await tx.insert(table.question).values({ quiz_id: quizId, text: question.toString() });
+			await tx.insert(table.question).values({ quizId: quizId, text: question.toString() });
 		});
 	},
 
@@ -132,7 +132,7 @@ export const actions = {
 		}
 		const option = await db
 			.insert(table.option)
-			.values({ text: optionText, question_id: questionId })
+			.values({ text: optionText, questionId: questionId })
 			.returning();
 		return { message: 'option added', data: { option } };
 	},
@@ -221,7 +221,7 @@ export const actions = {
 			.delete(table.question)
 			.where(
 				and(
-					eq(table.question.quiz_id, quizId),
+					eq(table.question.quizId, quizId),
 					eq(table.question.id, questionId)
 				)
 			);

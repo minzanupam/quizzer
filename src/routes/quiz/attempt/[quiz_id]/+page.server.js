@@ -11,7 +11,7 @@ export async function load({params}) {
 		error(400, {message: "failed to parse quiz_id"});
 	}
 	const quizzes = await db.select().from(table.quiz).where(eq(table.quiz.id, quizId));
-	const questions = await db.select().from(table.question).where(eq(table.question.quiz_id, quizId)).limit(1);
+	const questions = await db.select().from(table.question).where(eq(table.question.quizId, quizId)).limit(1);
 	try {
 		return {
 			quiz: quizzes[0],

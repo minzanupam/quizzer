@@ -15,7 +15,7 @@
 					>full name <input
 						type="text"
 						name="name"
-						value={data.user?.full_name}
+						value={data.user?.fullName}
 					/></label
 				>
 				<label
@@ -29,7 +29,7 @@
 				<button>done</button>
 			</form>
 		{:else}
-			<div>{data.user?.full_name}</div>
+			<div>{data.user?.fullName}</div>
 			<div>{data.user?.email}</div>
 			<button>edit profile</button>
 			<button>change password</button>

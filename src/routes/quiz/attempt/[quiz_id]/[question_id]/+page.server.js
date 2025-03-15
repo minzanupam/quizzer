@@ -22,12 +22,12 @@ export async function load({ cookies, params }) {
 		.where(
 			and(
 				eq(table.question.id, questionId),
-				eq(table.question.quiz_id, quizId)
+				eq(table.question.quizId, quizId)
 			)
 		)
-		.innerJoin(table.option, eq(table.option.question_id, questionId));
+		.innerJoin(table.option, eq(table.option.questionId, questionId));
 
-	const attempts = await db.select().from(table.quiz_attempt).where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+	const attempts = await db.select().from(table.quiz_attempt).where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
 
 	try {
 		return {
@@ -35,14 +35,14 @@ export async function load({ cookies, params }) {
 			options: questions.map((x) => {
 				let checked = false;
 				for (let y of attempts) {
-					if (y && y.option_id == x.option.id) {
+					if (y && y.optionId == x.option.id) {
 						checked = true;
 					}
 				}
 				return {
 					id: x.option.id,
 					text: x.option.text ?? "",
-					question_id: x.option.question_id,
+					question_id: x.option.questionId,
 					checked: checked,
 				};
 			})
@@ -80,13 +80,13 @@ export const actions = {
 		try {
 			await db
 				.insert(table.quiz_attempt)
-				.values({ quiz_id: quizId, question_id: questionId, option_id: optionId, user_id: user.id });
+				.values({ quizId: quizId, questionId: questionId, optionId: optionId, userId: user.id });
 		} catch(err) {
 			console.error(err);
 			await db
 				.update(table.quiz_attempt)
-				.set({option_id: optionId})
-				.where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+				.set({optionId: optionId})
+				.where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
 		}
 	},
 
@@ -129,27 +129,27 @@ export const actions = {
 				.delete(table.quiz_attempt)
 				.where(
 					and(
-						eq(table.quiz_attempt.quiz_id, quizId),
-						eq(table.quiz_attempt.question_id, questionId)
+						eq(table.quiz_attempt.quizId, quizId),
+						eq(table.quiz_attempt.questionId, questionId)
 					)
 				);
 		} else {
 			try {
 				await db.insert(table.quiz_attempt).values({
-					quiz_id: quizId,
-					question_id: questionId,
-					option_id: optionId,
-					user_id: user.id
+					quizId: quizId,
+					questionId: questionId,
+					optionId: optionId,
+					userId: user.id
 				});
 			} catch(err) {
 				console.error(err);
 				await db
 					.update(table.quiz_attempt)
-					.set({ option_id: optionId })
+					.set({ optionId: optionId })
 					.where(
 						and(
-							eq(table.quiz_attempt.quiz_id, quizId),
-							eq(table.quiz_attempt.question_id, questionId)
+							eq(table.quiz_attempt.quizId, quizId),
+							eq(table.quiz_attempt.questionId, questionId)
 						)
 					);
 			}
@@ -161,7 +161,7 @@ export const actions = {
 			.where(
 				and(
 					gt(table.question.id, questionId),
-					eq(table.question.quiz_id, quizId)
+					eq(table.question.quizId, quizId)
 				)
 			)
 			.orderBy(sql`${table.question.id} asc`)
@@ -171,7 +171,7 @@ export const actions = {
 			const questions2 = await db
 				.select({ id: table.question.id })
 				.from(table.question)
-				.where(eq(table.question.quiz_id, quizId))
+				.where(eq(table.question.quizId, quizId))
 				.orderBy(sql`${table.question.id} asc`)
 				.limit(1);
 			const firstQuestionId = questions2[0].id;
@@ -220,24 +220,24 @@ export const actions = {
 				.delete(table.quiz_attempt)
 				.where(
 					and(
-						eq(table.quiz_attempt.quiz_id, quizId),
-						eq(table.quiz_attempt.question_id, questionId)
+						eq(table.quiz_attempt.quizId, quizId),
+						eq(table.quiz_attempt.questionId, questionId)
 					)
 				);
 		} else {
 			try {
 				await db.insert(table.quiz_attempt).values({
-					quiz_id: quizId,
-					question_id: questionId,
-					option_id: optionId,
-					user_id: user.id
+					quizId: quizId,
+					questionId: questionId,
+					optionId: optionId,
+					userId: user.id
 				});
 			} catch(err) {
 				console.error(err);
 				await db
 				.update(table.quiz_attempt)
-				.set({option_id: optionId})
-				.where(and(eq(table.quiz_attempt.quiz_id, quizId), eq(table.quiz_attempt.question_id, questionId)));
+				.set({optionId: optionId})
+				.where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
 			}
 		}
 
@@ -247,7 +247,7 @@ export const actions = {
 			.where(
 				and(
 					lt(table.question.id, questionId),
-					eq(table.question.quiz_id, quizId)
+					eq(table.question.quizId, quizId)
 				)
 			)
 			.orderBy(sql`${table.question.id} asc`);
@@ -256,7 +256,7 @@ export const actions = {
 			const questions2 = await db
 				.select({ id: table.question.id })
 				.from(table.question)
-				.where(eq(table.question.quiz_id, quizId))
+				.where(eq(table.question.quizId, quizId))
 				.orderBy(sql`${table.question.id} asc`);
 			if (questions2.length == 0) {
 				console.error("previous question not found in questions:", questions2);

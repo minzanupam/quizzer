@@ -19,7 +19,7 @@
 			{#each rows as { quiz, user }}
 				<div>
 					<h3>{quiz.title}</h3>
-					<div>from: {user.full_name}</div>
+					<div>from: {user.fullName}</div>
 					<div>expires at: {quiz.expiresAt}</div>
 					<a href={`/quiz/edit/${quiz.id}`}> edit </a>
 					<a href={`/quiz/attempt/${quiz.id}`}>attempt</a>

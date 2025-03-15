@@ -48,7 +48,7 @@ export const actions = {
 			}
 			await db
 				.insert(table.user)
-				.values({ full_name: fullname, email: email, passwordHash: passwordHash });
+				.values({ fullName: fullname, email: email, passwordHash: passwordHash });
 		} catch (err) {
 			console.error(err);
 			return fail(409, {message: 'email already used, try logging in or clicking forget password'});
