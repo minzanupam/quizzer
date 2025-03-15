@@ -1,8 +1,8 @@
-import { error, fail, redirect } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
-import * as auth from '$lib/server/auth';
-import { db } from '$lib/server/db';
-import * as table from '$lib/server/db/schema';
+import { error, fail, redirect } from "@sveltejs/kit";
+import { eq } from "drizzle-orm";
+import * as auth from "$lib/server/auth";
+import { db } from "$lib/server/db";
+import * as table from "$lib/server/db/schema";
 
 async function getQuizzes() {
 	const quizzes = await db
@@ -22,19 +22,19 @@ export async function load({ cookies }) {
 			return {
 				quizzes: getQuizzes(),
 				user: {
-					id: user ? user.id : 0,
-				},
+					id: user ? user.id : 0
+				}
 			};
 		} else {
 			return {
 				quizzes: [],
 				user: {
-					id: 0,
+					id: 0
 				}
-			}
+			};
 		}
 	} catch (err) {
 		console.error(err);
-		return error(500, 'failed to fetch data from database');
+		return error(500, "failed to fetch data from database");
 	}
 }
