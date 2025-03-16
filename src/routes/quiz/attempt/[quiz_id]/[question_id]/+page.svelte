@@ -48,7 +48,7 @@
 		padding: 1rem;
 
 		& section {
-			border: 1px solid white;
+			border: 1px solid var(--colorAccent);
 		}
 	}
 	.question-section {
@@ -65,7 +65,7 @@
 	.options-box {
 		display: flex;
 		flex-direction: column;
-		border: 1px solid white;
+		border: 1px solid var(--colorAccent);
 		max-width: 60%;
 		border-radius: 8px;
 	}
@@ -75,7 +75,7 @@
 	}
 	.question-option-box {
 		padding: 0.5rem;
-		border-bottom: 1px solid white;
+		border-bottom: 1px solid var(--colorAccent);
 		&:last-child {
 			border-bottom: 0;
 		}

@@ -17,6 +17,9 @@
 <style>
 	:root {
 		color-scheme: dark light;
+		--colorBg: #18181b;
+		--colorAccent: #bfdbfe;
+		background-color: var(--colorBg);
 	}
 	.top-nav {
 		display: flex;
