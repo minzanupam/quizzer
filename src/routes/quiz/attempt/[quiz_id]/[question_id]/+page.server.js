@@ -138,25 +138,7 @@ export const actions = {
 					)
 				);
 		} else {
-			try {
-				await db.insert(table.quiz_attempt).values({
-					quizId: quizId,
-					questionId: questionId,
-					optionId: optionId,
-					userId: user.id
-				});
-			} catch(err) {
-				console.error(err);
-				await db
-					.update(table.quiz_attempt)
-					.set({ optionId: optionId })
-					.where(
-						and(
-							eq(table.quiz_attempt.quizId, quizId),
-							eq(table.quiz_attempt.questionId, questionId)
-						)
-					);
-			}
+			await selectElement({quizId, questionId, optionId, userId: user.id});
 		}
 
 		const questions = await db
@@ -229,20 +211,7 @@ export const actions = {
 					)
 				);
 		} else {
-			try {
-				await db.insert(table.quiz_attempt).values({
-					quizId: quizId,
-					questionId: questionId,
-					optionId: optionId,
-					userId: user.id
-				});
-			} catch(err) {
-				console.error(err);
-				await db
-				.update(table.quiz_attempt)
-				.set({optionId: optionId})
-				.where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
-			}
+			await selectElement({quizId, questionId, optionId, userId: user.id});
 		}
 
 		const questions = await db
