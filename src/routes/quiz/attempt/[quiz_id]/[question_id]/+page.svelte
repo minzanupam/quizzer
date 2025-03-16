@@ -15,7 +15,7 @@
 		<form
 			method="POST"
 			action="?/select"
-			class="question"
+			class="question-box"
 			bind:this={question_form}
 		>
 			<div class="options-box">
@@ -46,14 +46,16 @@
 		display: grid;
 		grid-template-columns: 1fr 3fr;
 		padding: 1rem;
-
-		& section {
-			border: 1px solid var(--colorAccent);
-			border-right: none;
-		}
+	}
+	.sidenav {
+		border: 2px solid var(--colorAccent);
+		margin-right: 8px;
+		min-height: 90vh;
 	}
 	.question-section {
 		padding-left: 2rem;
+		border: 2px solid var(--colorAccent);
+		border-radius: 8px;
 	}
 	.title-group {
 		display: flex;
