@@ -67,6 +67,7 @@
 		flex-direction: column;
 		border: 1px solid white;
 		max-width: 60%;
+		border-radius: 8px;
 	}
 	.question-text {
 		padding-top: 2rem;
@@ -74,6 +75,10 @@
 	}
 	.question-option-box {
 		padding: 0.5rem;
+		border-bottom: 1px solid white;
+		&:last-child {
+			border-bottom: 0;
+		}
 	}
 	.button-box {
 		padding-top: 1rem;
