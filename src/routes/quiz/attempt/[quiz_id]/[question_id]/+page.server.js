@@ -53,6 +53,20 @@ export async function load({ cookies, params }) {
 	}
 }
 
+async function selectElement({quizId, questionId, optionId, userId}) {
+	try {
+		await db
+			.insert(table.quiz_attempt)
+			.values({quizId, questionId, optionId, userId});
+	} catch(err) {
+		console.error(err);
+		await db
+			.update(table.quiz_attempt)
+			.set({optionId: optionId})
+			.where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
+	}
+}
+
 /** @type{import("./$types").Actions} */
 export const actions = {
 	select: async ({ request, params, cookies }) => {
@@ -77,17 +91,7 @@ export const actions = {
 			console.error("failed to parse option id with value:", formData.get("question_options"));
 			return fail(400, {message: "failed to parse option id"});
 		}
-		try {
-			await db
-				.insert(table.quiz_attempt)
-				.values({ quizId: quizId, questionId: questionId, optionId: optionId, userId: user.id });
-		} catch(err) {
-			console.error(err);
-			await db
-				.update(table.quiz_attempt)
-				.set({optionId: optionId})
-				.where(and(eq(table.quiz_attempt.quizId, quizId), eq(table.quiz_attempt.questionId, questionId)));
-		}
+		await selectElement({quizId, questionId, optionId, userId: user.id});
 	},
 
 	next: async ({ request, params, cookies }) => {
