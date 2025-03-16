@@ -34,7 +34,6 @@
 			</div>
 			<div class="button-box">
 				<button formaction="?/previous">previous</button>
-				<button>select</button>
 				<button formaction="?/next">next</button>
 			</div>
 		</form>
@@ -88,6 +87,7 @@
 	}
 	.button-box {
 		padding-top: 1rem;
+		padding-left: 0.625rem;
 		padding-bottom: 1rem;
 		display: flex;
 		max-width: 60%;
