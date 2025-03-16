@@ -24,19 +24,20 @@ export async function load({ cookies }) {
 		};
 	}
 
-	const attempted_quizzes = await db
-		.select()
-		.from(table.quiz_attempt)
-		.innerJoin(table.quiz, eq(table.quiz_attempt.quizId, table.quiz.id))
-		.innerJoin(table.user, eq(table.quiz.ownerId, table.user.id))
-		.where(eq(table.quiz_attempt.userId, user.id));
-
-	const unattempted_quizzes = await db
-		.select()
-		.from(table.quiz_attempt)
-		.innerJoin(table.quiz, eq(table.quiz_attempt.quizId, table.quiz.id))
-		.innerJoin(table.user, eq(table.quiz.ownerId, table.user.id))
-		.where(ne(table.quiz_attempt.userId, user.id));
+	const [attempted_quizzes, unattempted_quizzes] = await Promise.all([
+		db
+			.select()
+			.from(table.quiz_attempt)
+			.innerJoin(table.quiz, eq(table.quiz_attempt.quizId, table.quiz.id))
+			.innerJoin(table.user, eq(table.quiz.ownerId, table.user.id))
+			.where(eq(table.quiz_attempt.userId, user.id)),
+		db
+			.select()
+			.from(table.quiz_attempt)
+			.innerJoin(table.quiz, eq(table.quiz_attempt.quizId, table.quiz.id))
+			.innerJoin(table.user, eq(table.quiz.ownerId, table.user.id))
+			.where(ne(table.quiz_attempt.userId, user.id))
+		]);
 
 	return {
 		quizzes: {
