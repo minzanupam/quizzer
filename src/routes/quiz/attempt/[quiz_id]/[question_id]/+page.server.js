@@ -53,7 +53,7 @@ export async function load({ cookies, params }) {
 	}
 }
 
-async function selectElement({quizId, questionId, optionId, userId}) {
+async function selectOption({quizId, questionId, optionId, userId}) {
 	try {
 		await db
 			.insert(table.quiz_attempt)
@@ -91,7 +91,7 @@ export const actions = {
 			console.error("failed to parse option id with value:", formData.get("question_options"));
 			return fail(400, {message: "failed to parse option id"});
 		}
-		await selectElement({quizId, questionId, optionId, userId: user.id});
+		await selectOption({quizId, questionId, optionId, userId: user.id});
 	},
 
 	next: async ({ request, params, cookies }) => {
@@ -138,7 +138,7 @@ export const actions = {
 					)
 				);
 		} else {
-			await selectElement({quizId, questionId, optionId, userId: user.id});
+			await selectOption({quizId, questionId, optionId, userId: user.id});
 		}
 
 		const questions = await db
@@ -211,7 +211,7 @@ export const actions = {
 					)
 				);
 		} else {
-			await selectElement({quizId, questionId, optionId, userId: user.id});
+			await selectOption({quizId, questionId, optionId, userId: user.id});
 		}
 
 		const questions = await db
