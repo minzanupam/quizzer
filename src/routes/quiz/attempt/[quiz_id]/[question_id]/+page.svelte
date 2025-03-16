@@ -87,10 +87,24 @@
 	}
 	.button-box {
 		padding-top: 1rem;
-		padding-left: 0.625rem;
 		padding-bottom: 1rem;
+		padding-left: 8px;
 		display: flex;
 		max-width: 60%;
 		justify-content: space-between;
+
+		& > button {
+			border: 2px solid var(--colorBg);
+			border-bottom: 2px solid var(--colorAccent);
+			border-right: 2px solid var(--colorAccent);
+			background-color: var(--colorBg);
+			padding: 0.25rem;
+			width: 6rem;
+			&:hover {
+				border: 2px dotted var(--colorAccent);
+				border-left: 2px solid var(--colorAccent);
+				border-top: 2px solid var(--colorAccent);
+			}
+		}
 	}
 </style>
