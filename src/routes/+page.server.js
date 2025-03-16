@@ -17,6 +17,13 @@ export async function load({ cookies }) {
 	const token = auth.getSessionToken(cookies);
 	const { user } = await auth.validateSessionToken(token);
 
+	if (!user) {
+		return {
+			quizzes: null,
+			user: null
+		};
+	}
+
 	const attempted_quizzes = await db
 		.select()
 		.from(table.quiz_attempt)
@@ -34,8 +41,8 @@ export async function load({ cookies }) {
 	return {
 		quizzes: {
 			attempted: attempted_quizzes,
-			unattempted: unattempted_quizzes,
+			unattempted: unattempted_quizzes
 		},
-		user: user,
-	}
+		user: user
+	};
 }
