@@ -19,6 +19,7 @@
 		color-scheme: dark light;
 		--colorBg: #18181b;
 		--colorAccent: #bfdbfe;
+		--colorAccent2: #bfdbfe;
 		background-color: var(--colorBg);
 	}
 	.top-nav {

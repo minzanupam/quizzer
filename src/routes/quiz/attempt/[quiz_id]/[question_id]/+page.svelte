@@ -66,9 +66,10 @@
 	.options-box {
 		display: flex;
 		flex-direction: column;
-		border: 1px solid var(--colorAccent);
+		border: 2px solid var(--colorAccent);
 		max-width: 60%;
 		border-radius: 8px;
+		padding: 8px;
 	}
 	.question-text {
 		padding-top: 2rem;
@@ -76,7 +77,8 @@
 	}
 	.question-option-box {
 		padding: 0.5rem;
-		border-bottom: 1px solid var(--colorAccent);
+		position: relative;
+		border-bottom: 2px solid var(--colorAccent);
 		&:last-child {
 			border-bottom: 0;
 		}
