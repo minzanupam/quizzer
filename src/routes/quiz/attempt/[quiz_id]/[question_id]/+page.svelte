@@ -49,6 +49,7 @@
 
 		& section {
 			border: 1px solid var(--colorAccent);
+			border-right: none;
 		}
 	}
 	.question-section {
