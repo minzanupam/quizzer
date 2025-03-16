@@ -4,7 +4,7 @@
 </script>
 
 <main class="page">
-	<section class="sidenav">hello</section>
+	<section class="sidenav"></section>
 	<section class="question-section">
 		<div class="title-group">
 			<h1>Question {data.question?.id}.</h1>
@@ -56,6 +56,7 @@
 		padding-left: 2rem;
 		border: 2px solid var(--colorAccent);
 		border-radius: 8px;
+		margin: 1.5rem;
 	}
 	.title-group {
 		display: flex;
