@@ -16,9 +16,9 @@
 
 <style>
 	:root {
-		color-scheme: dark light;
-		--colorBg: #18181b;
-		--colorAccent: #bfdbfe;
+		color-scheme: light;
+		--colorBg: light-dark(white, #18181b);
+		--colorAccent: light-dark(#0f172a, #bfdbfe);
 		--colorAccent2: #bfdbfe;
 		background-color: var(--colorBg);
 	}
