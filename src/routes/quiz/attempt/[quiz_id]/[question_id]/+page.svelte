@@ -64,7 +64,8 @@
 		gap: 1rem;
 		justify-content: space-between;
 		align-items: flex-start;
-		padding: 1rem;
+		padding-top: 1rem;
+		padding-right: 1rem;
 	}
 	.options-box {
 		display: flex;
@@ -75,8 +76,7 @@
 		padding: 8px;
 	}
 	.question-text {
-		padding-top: 2rem;
-		padding-bottom: 2rem;
+		padding: 2rem;
 	}
 	.question-option-box {
 		padding: 0.5rem;
