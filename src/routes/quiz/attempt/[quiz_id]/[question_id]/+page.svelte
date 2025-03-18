@@ -45,6 +45,7 @@
 		display: grid;
 		grid-template-columns: 1fr 3fr;
 		padding: 1rem;
+		font-family: "Noto Serif", "times new roman", serif;
 	}
 	.sidenav {
 		border: 2px solid var(--colorAccent);
