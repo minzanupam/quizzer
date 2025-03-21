@@ -55,7 +55,7 @@
 											curedt_oid = -1;
 										}}>cancel</button
 									>
-									<button class="delete-button" formaction="?/option_delete">
+									<button class="delete-button" formaction="?/option_delete" type="button">
 										delete
 									</button>
 									<button class="done-button">done</button>
