@@ -29,6 +29,7 @@ export async function load({ cookies }) {
 		.from(table.quiz_attempt)
 		.innerJoin(table.quiz, eq(table.quiz_attempt.quizId, table.quiz.id))
 		.innerJoin(table.user, eq(table.quiz.ownerId, table.user.id))
+		.groupBy(table.quiz.id)
 		.where(eq(table.quiz_attempt.userId, user.id));
 
 	const unattempted_quizzes = await db
