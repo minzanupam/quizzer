@@ -161,7 +161,7 @@ export const actions = {
 				.orderBy(sql`${table.question.id} asc`)
 				.limit(1);
 			const firstQuestionId = questions2[0].id;
-			return redirect(302, `/quiz/attempt/${quizId}/${firstQuestionId}`);
+			return redirect(302, `/quiz/attempt/${quizId}/end`);
 		}
 		const nextQuestionId = questions[0].id;
 		return redirect(302, `/quiz/attempt/${quizId}/${nextQuestionId}`);
