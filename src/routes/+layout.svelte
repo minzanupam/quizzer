@@ -15,7 +15,13 @@
 {@render children()}
 
 <style>
-	@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
+	@font-face {
+		font-family: 'Anton';
+		font-style: normal;
+		font-weight: 400;
+		font-display: swap;
+		src: url(/Anton-Regular.ttf) format('woff2');
+	}
 	:root {
 		color-scheme: light;
 		--colorBg: light-dark(white, #18181b);
