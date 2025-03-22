@@ -23,9 +23,9 @@
 		src: url(/Anton-Regular.ttf) format('woff2');
 	}
 	:root {
-		color-scheme: light;
+		color-scheme: dark;
 		--colorBg: light-dark(white, #18181b);
-		--colorAccent: light-dark(#0f172a, #bfdbfe);
+		--colorAccent: light-dark(#0f172a, #6b7280);
 		--colorAccent2: light-dark(#374151, #bfdbfe);
 		background-color: var(--colorBg);
 	}
