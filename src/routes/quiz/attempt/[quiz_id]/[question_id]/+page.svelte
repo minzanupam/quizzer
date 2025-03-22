@@ -1,4 +1,6 @@
 <script>
+	import { enhance } from '$app/forms';
+
 	const { data } = $props();
 	let question_form = $state();
 </script>
@@ -17,6 +19,7 @@
 			action="?/select"
 			class="question-box"
 			bind:this={question_form}
+			use:enhance
 		>
 			<div class="options-box">
 				{#each data.options as option}
