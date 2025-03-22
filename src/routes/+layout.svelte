@@ -52,7 +52,7 @@
 				height: 2px;
 				margin-left: 10%;
 				display: block;
-				background: black;
+				background: light-dark(black, var(--colorAccent));
 				transition: width 0.5s;
 				color: transparent;
 			}
