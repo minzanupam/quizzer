@@ -1,5 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { goto } from "$app/navigation";
 
 	const { data } = $props();
 	let question_form = $state();
@@ -19,8 +20,13 @@
 			action="?/select"
 			class="question-box"
 			bind:this={question_form}
-			use:enhance
-		>
+			use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+				return async ({ result, update }) => {
+					if (result.type === 'redirect') {
+						goto(result.location);
+					}
+				};
+			}}>
 			<div class="options-box">
 				{#each data.options as option}
 					<label class="question-option-box">
